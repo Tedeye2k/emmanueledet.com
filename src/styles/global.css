@@ -605,8 +605,6 @@ a.row:hover .entry-arrow { color: var(--fg); transform: translate(2px, -2px); }
     padding: 22px 0 26px;
     letter-spacing: 0.1em;
   }
-  .footer-inner .copyright { order: 1; }
-  .footer-inner .tagline { order: 2; }
 }
 
 /* ---------- Small phones (up to 430px) ---------- */
