@@ -1,3 +1,4 @@
+// Settings for publishing the Studio to https://emmanueledet.sanity.studio
 import {defineCliConfig} from 'sanity/cli'
 
 export default defineCliConfig({
