@@ -1,0 +1,126 @@
+---
+import '@fontsource/playfair-display/400.css';
+import '@fontsource/playfair-display/400-italic.css';
+import '@fontsource/dm-sans/400.css';
+import '@fontsource/dm-sans/500.css';
+import '@fontsource/dm-mono/400.css';
+import '../styles/global.css';
+import { getSettings, link, plainLine } from '../lib/sanity';
+
+interface Props {
+  title?: string;
+  description?: string;
+  section?: 'home' | 'writing' | 'case-studies' | 'books' | 'thoughts' | 'movies';
+  home?: boolean;
+}
+
+const { title, description, section, home = false } = Astro.props;
+const settings = await getSettings();
+const pageTitle = title
+  ? `${plainLine(title)} — ${settings.name}`
+  : `${settings.name} — ${settings.role}`;
+const pageDescription = description || settings.seoDescription;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const mailto = `mailto:${settings.email}`;
+
+const nav = [
+  { label: 'Writing', href: link('/writing/'), id: 'writing' },
+  { label: 'Case Study', href: link('/case-studies/'), id: 'case-studies' },
+  { label: 'Books', href: link('/books/'), id: 'books' },
+  { label: 'Thoughts', href: link('/thoughts/'), id: 'thoughts' },
+  { label: 'Music', href: settings.musicUrl, id: 'music', external: true },
+  { label: 'Movies', href: link('/movies/'), id: 'movies' },
+];
+---
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{pageTitle}</title>
+<meta name="description" content={pageDescription}>
+<link rel="canonical" href={canonical}>
+<meta property="og:type" content="website">
+<meta property="og:title" content={pageTitle}>
+<meta property="og:description" content={pageDescription}>
+<meta property="og:url" content={canonical}>
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href={link('/favicon.svg')}>
+
+<!-- Apply the saved theme before the page paints, so there is no flash -->
+<script is:inline>
+  (function () {
+    try {
+      var saved = localStorage.getItem('portfolio-theme');
+      if (saved === 'light' || saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', saved);
+      }
+    } catch (e) {}
+  })();
+</script>
+
+</head>
+<body>
+<div class="page">
+
+  <header class="container">
+    <div class="header-inner">
+      <a class="brand" href={link('/')}>{settings.name}®</a>
+
+      <nav class="nav" aria-label="Sections">
+        {nav.map((item) =>
+          item.external ? (
+            <a class="nav-link mono" href={item.href} target="_blank" rel="noopener">{item.label}</a>
+          ) : (
+            <a class="nav-link mono" href={item.href} aria-current={section === item.id ? 'page' : undefined}>{item.label}</a>
+          )
+        )}
+      </nav>
+
+      <div class="header-actions">
+        <button class="theme-btn" id="theme-toggle" type="button" aria-label="Switch to light theme">
+          <svg class="icon-sun" aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><circle cx="8" cy="8" r="3"/><path d="M8 1.5v1.6M8 12.9v1.6M1.5 8h1.6M12.9 8h1.6M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M3.4 12.6l1.1-1.1M11.5 4.5l1.1-1.1"/></svg>
+          <svg class="icon-moon" aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"><path d="M13.5 9.6A5.8 5.8 0 0 1 6.4 2.5a5.8 5.8 0 1 0 7.1 7.1z"/></svg>
+        </button>
+        <a class="btn-line mono" href={mailto}>Get in touch
+          <svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M2.5 9.5l7-7M4 2.5h5.5V8"/></svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class:list={['container', home ? 'hero' : 'content']}>
+    <slot />
+  </main>
+
+  <footer class="container">
+    <div class="footer-inner mono">
+      <span class="tagline">{settings.footerTagline}</span>
+      <span class="copyright">© {new Date().getFullYear()} {settings.name}</span>
+    </div>
+  </footer>
+
+</div>
+
+<script is:inline>
+  (function () {
+    var root = document.documentElement;
+    var button = document.getElementById('theme-toggle');
+
+    function label() {
+      var isDark = root.getAttribute('data-theme') !== 'light';
+      button.setAttribute('aria-label', isDark ? 'Switch to light theme' : 'Switch to dark theme');
+    }
+
+    button.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('portfolio-theme', next); } catch (e) {}
+      label();
+    });
+
+    label();
+  })();
+</script>
+</body>
+</html>

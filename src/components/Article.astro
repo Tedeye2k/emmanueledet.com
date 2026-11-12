@@ -1,0 +1,29 @@
+---
+import { bodyHtml, imageUrl, imageAlt, link, getSettings, type Entry } from '../lib/sanity';
+interface Props { entry: Entry; backLabel: string; backHref: string; meta: (string | undefined)[]; }
+const { entry, backLabel, backHref, meta } = Astro.props;
+const settings = await getSettings();
+const cover = imageUrl(entry.cover, 1440);
+const details = meta.filter(Boolean);
+---
+<article class="article">
+  <a class="back mono" href={link(backHref)}>
+    <svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M10 6H2M5.5 2.5L2 6l3.5 3.5"/></svg>
+    {backLabel}
+  </a>
+  {details.length > 0 && (
+    <div class="article-meta mono">{details.map((item) => <span>{item}</span>)}</div>
+  )}
+  <h1 class="article-title">{entry.title}</h1>
+  {entry.excerpt && <p class="article-lead">{entry.excerpt}</p>}
+  {cover && (
+    <figure class="article-cover"><img src={cover} alt={imageAlt(entry.cover)} /></figure>
+  )}
+  <div class="prose" set:html={bodyHtml(entry.body)} />
+  <div class="article-end">
+    <p>Thanks for reading. Got a project or a thought to share?</p>
+    <a class="btn-solid" href={`mailto:${settings.email}`}>Get in touch
+      <svg aria-hidden="true" width="13" height="13" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M2.5 9.5l7-7M4 2.5h5.5V8"/></svg>
+    </a>
+  </div>
+</article>

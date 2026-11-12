@@ -1,0 +1,37 @@
+---
+import { imageUrl, imageAlt, type ShelfItem } from '../lib/sanity';
+interface Props { items: ShelfItem[]; }
+const { items } = Astro.props;
+const clamp = (n?: number) => Math.max(0, Math.min(5, Math.round(n || 0)));
+---
+{items.length === 0 ? (
+  <p class="empty mono">Nothing here yet. Check back soon.</p>
+) : (
+  <ul class="shelf">
+    {items.map((item) => {
+      const src = imageUrl(item.cover, 480, 720);
+      const stars = clamp(item.rating);
+      return (
+        <li class="shelf-item">
+          <div class="shelf-cover">
+            {src ? (
+              <img src={src} alt={imageAlt(item.cover, `Cover of ${item.title}`)} width="480" height="720" loading="lazy" />
+            ) : (
+              <div class="shelf-cover-blank" aria-hidden="true">{item.title}</div>
+            )}
+          </div>
+          <span class="shelf-title">{item.title}</span>
+          {(item.by || item.year) && (
+            <span class="shelf-by mono">{[item.by, item.year].filter(Boolean).join(' · ')}</span>
+          )}
+          {stars > 0 && (
+            <span class="shelf-rating" role="img" aria-label={`Rated ${stars} out of 5`}>
+              <span aria-hidden="true">{'★'.repeat(stars)}<span class="off">{'★'.repeat(5 - stars)}</span></span>
+            </span>
+          )}
+          {item.note && <p class="shelf-note">{item.note}</p>}
+        </li>
+      );
+    })}
+  </ul>
+)}

@@ -1,0 +1,45 @@
+# Publishes the Sanity Studio (the editing screen) to
+# https://emmanueledet.sanity.studio whenever its setup changes.
+# Needs a repository secret named SANITY_AUTH_TOKEN.
+name: Publish Sanity Studio
+
+on:
+  push:
+    branches: [main]
+    paths: ['studio/**', '.github/workflows/deploy-studio.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
+    defaults:
+      run:
+        working-directory: studio
+    steps:
+      - name: Check for the Sanity token
+        id: token
+        working-directory: .
+        run: |
+          if [ -z "$SANITY_AUTH_TOKEN" ]; then
+            echo "::warning::SANITY_AUTH_TOKEN is not set yet, so the Studio was not published."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@v4
+        if: steps.token.outputs.ready == 'true'
+      - uses: actions/setup-node@v4
+        if: steps.token.outputs.ready == 'true'
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: studio/package-lock.json
+      - run: npm ci
+        if: steps.token.outputs.ready == 'true'
+      - run: npx sanity deploy --url emmanueledet --yes
+        if: steps.token.outputs.ready == 'true'

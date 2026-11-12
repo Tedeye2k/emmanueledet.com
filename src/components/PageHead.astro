@@ -1,0 +1,10 @@
+---
+import { richLine } from '../lib/sanity';
+interface Props { label: string; title: string; intro?: string; }
+const { label, title, intro } = Astro.props;
+---
+<div class="page-head">
+  <span class="eyebrow mono">{label}</span>
+  <h1 class="page-title" set:html={richLine(title)} />
+  {intro && <p class="page-intro">{intro}</p>}
+</div>

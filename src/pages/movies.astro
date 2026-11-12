@@ -1,0 +1,12 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Shelf from '../components/Shelf.astro';
+import { getSettings, getMovies } from '../lib/sanity';
+const settings = await getSettings();
+const movies = await getMovies();
+---
+<Base title="Movies" description={settings.moviesIntro} section="movies">
+  <PageHead label="Movies" title={settings.moviesTitle} intro={settings.moviesIntro} />
+  <Shelf items={movies} />
+</Base>

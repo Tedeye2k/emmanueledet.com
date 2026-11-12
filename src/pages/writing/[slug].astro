@@ -1,0 +1,13 @@
+---
+import Base from '../../layouts/Base.astro';
+import Article from '../../components/Article.astro';
+import { getPosts, formatDate } from '../../lib/sanity';
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
+}
+const { entry } = Astro.props;
+---
+<Base title={entry.title} description={entry.excerpt} section="writing">
+  <Article entry={entry} backLabel="All writing" backHref="/writing/" meta={[formatDate(entry.date), entry.category]} />
+</Base>

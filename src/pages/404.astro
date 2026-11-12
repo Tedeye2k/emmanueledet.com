@@ -1,0 +1,9 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { link } from '../lib/sanity';
+---
+<Base title="Page not found">
+  <PageHead label="404" title="This page went *wandering*." intro="The link is broken or the page has moved." />
+  <a class="btn-solid" href={link('/')}>Back to the start</a>
+</Base>

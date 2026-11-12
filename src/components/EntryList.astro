@@ -1,0 +1,35 @@
+---
+import { formatDate, link, type Entry } from '../lib/sanity';
+interface Props { entries: Entry[]; base: string; kind: 'post' | 'caseStudy' | 'thought'; }
+const { entries, base, kind } = Astro.props;
+---
+{entries.length === 0 ? (
+  <p class="empty mono">Nothing here yet. Check back soon.</p>
+) : (
+  <ul class="entries">
+    {entries.map((entry) => (
+      <li>
+        <a class="entry" href={link(`${base}${entry.slug}/`)}>
+          <span class="entry-meta mono">
+            {kind === 'caseStudy' ? (
+              <>
+                {entry.client && <span>{entry.client}</span>}
+                {entry.year && <span>{entry.year}</span>}
+              </>
+            ) : (
+              <>
+                <span>{formatDate(entry.date)}</span>
+                {entry.category && <span>{entry.category}</span>}
+              </>
+            )}
+          </span>
+          <span class="entry-main">
+            <span class="entry-title">{entry.title}</span>
+            {entry.excerpt && <span class="entry-excerpt">{entry.excerpt}</span>}
+          </span>
+          <svg class="entry-arrow" aria-hidden="true" width="14" height="14" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M2.5 9.5l7-7M4 2.5h5.5V8"/></svg>
+        </a>
+      </li>
+    ))}
+  </ul>
+)}
