@@ -33,12 +33,6 @@ export const credits = [
   { title: 'Fourth Sample Song', artist: 'Artist Name', roles: ['Songwriter'], year: '2024', url: 'https://example.com' },
 ];
 
-export const socials = [
-  { label: 'Instagram', url: 'https://instagram.com/yourhandle' },
-  { label: 'X', url: 'https://x.com/yourhandle' },
-  { label: 'LinkedIn', url: 'https://www.linkedin.com/in/yourhandle' },
-];
-
 export const books = [
   { title: 'Sample Book One', by: 'Author Name', rating: 5, note: 'A one-line note about why it stayed with you.' },
   { title: 'A Longer Sample Book Title', by: 'Another Author', rating: 4, note: 'Short and honest.' },

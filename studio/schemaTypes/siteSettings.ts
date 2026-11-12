@@ -37,14 +37,14 @@ export const siteSettings = defineType({
     defineField({name: 'contactIntro', title: 'Contact: introduction', type: 'text', rows: 2, group: 'pages'}),
 
     defineField({name: 'name', title: 'Your name', type: 'string', group: 'general'}),
-    defineField({name: 'email', title: 'Contact email', type: 'string', group: 'general', description: 'Shown on the Contact page.', validation: (rule) => rule.email()}),
+    defineField({name: 'email', title: 'Contact email', type: 'string', group: 'general', description: 'Used by the "Send an email" button on the Contact page.', validation: (rule) => rule.email()}),
     defineField({name: 'musicUrl', title: 'Resparkit profile link', type: 'url', group: 'general', description: 'The "Listen on Resparkit" button on the Music page goes here.'}),
     defineField({
       name: 'socials',
       title: 'Social links',
       type: 'array',
       group: 'general',
-      description: 'Shown on the Contact page under your email, in this order.',
+      description: 'Buttons on the Contact page, in this order. Drag to reorder.',
       of: [
         {
           type: 'object',
@@ -57,6 +57,13 @@ export const siteSettings = defineType({
           preview: {select: {title: 'label', subtitle: 'url'}},
         },
       ],
+    }),
+    defineField({
+      name: 'contactFormKey',
+      title: 'Contact form key',
+      type: 'string',
+      group: 'general',
+      description: 'Your access key from web3forms.com. With a key, "Send an email" opens a contact form that delivers to your inbox. Leave empty and the button opens the visitor\'s own email app instead.',
     }),
     defineField({name: 'footerTagline', title: 'Footer line', type: 'string', group: 'general'}),
     defineField({name: 'seoDescription', title: 'Description for Google', type: 'text', rows: 3, group: 'general', description: 'One or two sentences shown under your name in search results.', validation: (rule) => rule.max(170)}),

@@ -1,7 +1,7 @@
 import { createClient } from '@sanity/client';
 import { createImageUrlBuilder } from '@sanity/image-url';
 import { toHTML } from '@portabletext/to-html';
-import { defaults, type Settings } from './defaults';
+import { defaults, defaultSocials, type Settings } from './defaults';
 import * as sample from './sample';
 
 export const projectId = 'ojybom2y';
@@ -64,9 +64,10 @@ export async function getSocials(): Promise<Social[]> {
   const saved = await fetchOr<Social[]>(
     `*[_id == "siteSettings"][0].socials[]{ label, url }`,
     [],
-    sample.socials,
+    [],
   );
-  return saved.filter((item) => item?.label && item?.url);
+  const filled = saved.filter((item) => item?.label && item?.url);
+  return filled.length > 0 ? filled : defaultSocials;
 }
 
 export const getCredits = () =>
@@ -82,8 +83,9 @@ export async function getSettings(): Promise<Settings> {
   const merged: any = { ...defaults };
   for (const key of Object.keys(defaults)) {
     const value = saved[key];
-    if (typeof value === 'string' && value.trim() !== '') merged[key] = value;
+    if (typeof value === 'string' && value.trim() !== '') merged[key] = value.trim();
   }
+  if (useSample) merged.contactFormKey = 'preview-only';
   return merged;
 }
 

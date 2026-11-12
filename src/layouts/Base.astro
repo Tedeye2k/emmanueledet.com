@@ -12,9 +12,10 @@ interface Props {
   description?: string;
   section?: 'home' | 'writing' | 'books' | 'music' | 'movies' | 'contact';
   home?: boolean;
+  center?: boolean;
 }
 
-const { title, description, section, home = false } = Astro.props;
+const { title, description, section, home = false, center = false } = Astro.props;
 const settings = await getSettings();
 const pageTitle = title
   ? `${plainLine(title)} — ${settings.name}`
@@ -84,7 +85,7 @@ const nav = [
     </div>
   </header>
 
-  <main class:list={['container', home ? 'hero' : 'content']}>
+  <main class:list={['container', home ? 'hero' : 'content', center && 'content-center']}>
     <slot />
   </main>
 
