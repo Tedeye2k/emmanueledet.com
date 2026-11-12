@@ -10,7 +10,7 @@ export const defaults = {
   email: 'emmanueledet2k@gmail.com',
   musicUrl: 'https://resparkit.com/tedeye',
   // Web3Forms access key. Empty = the email button opens the visitor's email app.
-  contactFormKey: '',
+  contactFormKey: 'fca68638-b413-4076-bbc4-e966e629d291',
   footerTagline: 'Working everywhere',
   seoDescription:
     'Emmanuel Edet is a writer and creative strategist who helps brands say what they mean. Strategy, writing, music, and notes on books and film.',
