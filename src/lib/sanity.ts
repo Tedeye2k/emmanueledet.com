@@ -11,10 +11,13 @@ const client = createClient({ projectId, dataset, apiVersion: '2025-01-01', useC
 const builder = createImageUrlBuilder({ projectId, dataset });
 
 // USE_SAMPLE=1 fills the site with made-up content for design previews only.
+// USE_SAMPLE=empty builds the site as it looks before any content is added.
 const useSample = process.env.USE_SAMPLE === '1';
+const useEmpty = process.env.USE_SAMPLE === 'empty';
 
 async function fetchOr<T>(groq: string, fallback: T, sampleValue: T): Promise<T> {
   if (useSample) return sampleValue;
+  if (useEmpty) return fallback;
   try {
     const result = await client.fetch(groq);
     return (result ?? fallback) as T;
