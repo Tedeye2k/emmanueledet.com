@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { getSettings, getSocials } from '../lib/sanity';
+const settings = await getSettings();
+const socials = await getSocials();
+const arrow = 'M2.5 9.5l7-7M4 2.5h5.5V8';
+const tidy = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+---
+<Base title="Contact" description={settings.contactIntro} section="contact">
+  <PageHead label="Contact" title={settings.contactTitle} intro={settings.contactIntro} />
+  <ul class="rows">
+    <li>
+      <a class="row" href={`mailto:${settings.email}`}>
+        <span class="row-label mono">Email</span>
+        <span class="row-main"><span class="row-title">{settings.email}</span></span>
+        <span class="row-tags mono"></span>
+        <svg class="entry-arrow" aria-hidden="true" width="14" height="14" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><path d={arrow}/></svg>
+      </a>
+    </li>
+    {socials.map((social) => (
+      <li>
+        <a class="row" href={social.url} target="_blank" rel="noopener me">
+          <span class="row-label mono">{social.label}</span>
+          <span class="row-main"><span class="row-title">{tidy(social.url)}</span></span>
+          <span class="row-tags mono"></span>
+          <svg class="entry-arrow" aria-hidden="true" width="14" height="14" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><path d={arrow}/></svg>
+        </a>
+      </li>
+    ))}
+  </ul>
+</Base>

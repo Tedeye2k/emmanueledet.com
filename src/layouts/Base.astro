@@ -10,7 +10,7 @@ import { getSettings, link, plainLine } from '../lib/sanity';
 interface Props {
   title?: string;
   description?: string;
-  section?: 'home' | 'writing' | 'case-studies' | 'books' | 'thoughts' | 'movies';
+  section?: 'home' | 'writing' | 'books' | 'music' | 'movies' | 'contact';
   home?: boolean;
 }
 
@@ -21,14 +21,12 @@ const pageTitle = title
   : `${settings.name} — ${settings.role}`;
 const pageDescription = description || settings.seoDescription;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
-const mailto = `mailto:${settings.email}`;
+const contact = link('/contact/');
 
 const nav = [
   { label: 'Writing', href: link('/writing/'), id: 'writing' },
-  { label: 'Case Study', href: link('/case-studies/'), id: 'case-studies' },
   { label: 'Books', href: link('/books/'), id: 'books' },
-  { label: 'Thoughts', href: link('/thoughts/'), id: 'thoughts' },
-  { label: 'Music', href: settings.musicUrl, id: 'music', external: true },
+  { label: 'Music', href: link('/music/'), id: 'music' },
   { label: 'Movies', href: link('/movies/'), id: 'movies' },
 ];
 ---
@@ -68,13 +66,10 @@ const nav = [
       <a class="brand" href={link('/')}>{settings.name}®</a>
 
       <nav class="nav" aria-label="Sections">
-        {nav.map((item) =>
-          item.external ? (
-            <a class="nav-link mono" href={item.href} target="_blank" rel="noopener">{item.label}</a>
-          ) : (
-            <a class="nav-link mono" href={item.href} aria-current={section === item.id ? 'page' : undefined}>{item.label}</a>
-          )
-        )}
+        {nav.map((item) => (
+          <a class="nav-link mono" href={item.href} aria-current={section === item.id ? 'page' : undefined}>{item.label}</a>
+        ))}
+        <a class="nav-link nav-contact mono" href={contact} aria-current={section === 'contact' ? 'page' : undefined}>Contact</a>
       </nav>
 
       <div class="header-actions">
@@ -82,7 +77,7 @@ const nav = [
           <svg class="icon-sun" aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><circle cx="8" cy="8" r="3"/><path d="M8 1.5v1.6M8 12.9v1.6M1.5 8h1.6M12.9 8h1.6M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M3.4 12.6l1.1-1.1M11.5 4.5l1.1-1.1"/></svg>
           <svg class="icon-moon" aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"><path d="M13.5 9.6A5.8 5.8 0 0 1 6.4 2.5a5.8 5.8 0 1 0 7.1 7.1z"/></svg>
         </button>
-        <a class="btn-line mono" href={mailto}>Get in touch
+        <a class="btn-line mono" href={contact} aria-current={section === 'contact' ? 'page' : undefined}>Get in touch
           <svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M2.5 9.5l7-7M4 2.5h5.5V8"/></svg>
         </a>
       </div>

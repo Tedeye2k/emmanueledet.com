@@ -37,9 +37,6 @@ export type Entry = {
   date?: string;
   category?: string;
   excerpt?: string;
-  client?: string;
-  role?: string;
-  year?: string;
   cover?: any;
   body?: any[];
 };
@@ -52,6 +49,33 @@ export type ShelfItem = {
   rating?: number;
   note?: string;
 };
+
+export type Credit = {
+  title: string;
+  artist?: string;
+  roles?: string[];
+  year?: string;
+  url?: string;
+};
+
+export type Social = { label: string; url: string };
+
+export async function getSocials(): Promise<Social[]> {
+  const saved = await fetchOr<Social[]>(
+    `*[_id == "siteSettings"][0].socials[]{ label, url }`,
+    [],
+    sample.socials,
+  );
+  return saved.filter((item) => item?.label && item?.url);
+}
+
+export const getCredits = () =>
+  fetchOr<Credit[]>(
+    `*[_type == "credit"] | order(year desc, _createdAt desc)
+      { title, artist, roles, year, url }`,
+    [],
+    sample.credits,
+  );
 
 export async function getSettings(): Promise<Settings> {
   const saved = await fetchOr<Record<string, unknown>>(`*[_id == "siteSettings"][0]`, {}, {});
@@ -69,22 +93,6 @@ export const getPosts = () =>
       { title, "slug": slug.current, "date": publishedAt, category, excerpt, "cover": coverImage, body }`,
     [],
     sample.posts,
-  );
-
-export const getCaseStudies = () =>
-  fetchOr<Entry[]>(
-    `*[_type == "caseStudy" && defined(slug.current)] | order(year desc, _createdAt desc)
-      { title, "slug": slug.current, client, role, year, "excerpt": summary, "cover": coverImage, body }`,
-    [],
-    sample.caseStudies,
-  );
-
-export const getThoughts = () =>
-  fetchOr<Entry[]>(
-    `*[_type == "thought" && defined(slug.current)] | order(publishedAt desc)
-      { title, "slug": slug.current, "date": publishedAt, body }`,
-    [],
-    sample.thoughts,
   );
 
 export const getBooks = () =>

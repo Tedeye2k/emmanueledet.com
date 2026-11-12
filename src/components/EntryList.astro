@@ -1,7 +1,7 @@
 ---
 import { formatDate, link, type Entry } from '../lib/sanity';
-interface Props { entries: Entry[]; base: string; kind: 'post' | 'caseStudy' | 'thought'; }
-const { entries, base, kind } = Astro.props;
+interface Props { entries: Entry[]; base: string; }
+const { entries, base } = Astro.props;
 ---
 {entries.length === 0 ? (
   <p class="empty mono">Nothing here yet. Check back soon.</p>
@@ -11,17 +11,8 @@ const { entries, base, kind } = Astro.props;
       <li>
         <a class="entry" href={link(`${base}${entry.slug}/`)}>
           <span class="entry-meta mono">
-            {kind === 'caseStudy' ? (
-              <>
-                {entry.client && <span>{entry.client}</span>}
-                {entry.year && <span>{entry.year}</span>}
-              </>
-            ) : (
-              <>
-                <span>{formatDate(entry.date)}</span>
-                {entry.category && <span>{entry.category}</span>}
-              </>
-            )}
+            <span>{formatDate(entry.date)}</span>
+            {entry.category && <span>{entry.category}</span>}
           </span>
           <span class="entry-main">
             <span class="entry-title">{entry.title}</span>

@@ -98,6 +98,8 @@ img { max-width: 100%; display: block; }
 }
 .nav-link:hover,
 .nav-link[aria-current="page"] { color: var(--fg); }
+/* "Contact" joins the menu only on phones, where the button is hidden */
+.nav-contact { display: none; }
 .header-actions {
   grid-area: actions;
   justify-self: end;
@@ -137,7 +139,8 @@ img { max-width: 100%; display: block; }
   border-radius: 999px;
   transition: border-color .2s ease;
 }
-.btn-line:hover { border-color: var(--fg); }
+.btn-line:hover,
+.btn-line[aria-current="page"] { border-color: var(--fg); }
 
 /* ---------- Hero / About (home page) ---------- */
 .hero {
@@ -302,6 +305,44 @@ h1 em { font-style: italic; font-weight: 400; }
 .entry-arrow { color: var(--dim); transition: color .2s ease, transform .2s ease; }
 .entry:hover .entry-arrow { color: var(--fg); transform: translate(2px, -2px); }
 
+/* ---------- Rows: Music credits, Contact ---------- */
+.section-label {
+  margin: 0 0 20px;
+  letter-spacing: 0.16em;
+  font-weight: 400;
+  color: var(--muted);
+}
+.page-cta { margin: -8px 0 clamp(48px, 6vw, 80px); }
+.rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+.row {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr) auto 14px;
+  align-items: baseline;
+  gap: 6px 32px;
+  padding: 26px 0;
+  border-bottom: 1px solid var(--line);
+  transition: border-color .2s ease;
+}
+a.row:hover { border-bottom-color: var(--line-strong); }
+.row-label { letter-spacing: 0.14em; color: var(--dim); }
+.row-main { min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.row-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(22px, 2.6vw, 30px);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+}
+.row-sub { font-size: 15px; line-height: 1.5; color: var(--muted); }
+.row-tags { letter-spacing: 0.14em; color: var(--muted); text-align: right; }
+.row .entry-arrow { align-self: center; }
+a.row:hover .entry-arrow { color: var(--fg); transform: translate(2px, -2px); }
+
 /* ---------- Shelves: Books, Movies ---------- */
 .shelf {
   list-style: none;
@@ -454,15 +495,20 @@ h1 em { font-style: italic; font-weight: 400; }
 @media (max-width: 760px) {
   .entry { grid-template-columns: minmax(0, 1fr) auto; padding: 24px 0; }
   .entry-meta { grid-column: 1 / -1; flex-direction: row; flex-wrap: wrap; gap: 4px 16px; }
+
+  .row { grid-template-columns: minmax(0, 1fr) 14px; gap: 6px 16px; padding: 22px 0; }
+  .row-label { grid-column: 1 / -1; }
+  .row-main { grid-column: 1; }
+  .row-tags { grid-column: 1; text-align: left; }
+  .row .entry-arrow { grid-column: 2; grid-row: 2; }
 }
 
 /* ---------- Phones (up to 600px) ---------- */
 @media (max-width: 600px) {
-  .nav {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0 8px;
-  }
+  /* Five short links in one row, pinned to both edges */
+  .nav { gap: 0 8px; }
+  .nav-link { letter-spacing: 0.1em; }
+  .nav-contact { display: flex; }
   .header-actions .btn-line { display: none; }
 
   .hero-title { gap: 28px; }
@@ -481,8 +527,15 @@ h1 em { font-style: italic; font-weight: 400; }
   .footer-inner .tagline { order: 2; }
 }
 
+/* ---------- Small phones (up to 430px) ---------- */
+/* Long email addresses and links shrink to stay on one line */
+@media (max-width: 430px) {
+  .row-title { font-size: clamp(16px, 5.3vw, 22px); }
+}
+
 /* ---------- Very narrow phones (up to 350px) ---------- */
 @media (max-width: 350px) {
+  .nav-link { font-size: 10px; letter-spacing: 0.06em; }
   .footer-inner { font-size: 10px; letter-spacing: 0.08em; }
 }
 

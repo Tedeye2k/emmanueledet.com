@@ -1,9 +1,8 @@
 import {bodyText} from './bodyText'
 import {book} from './book'
-import {caseStudy} from './caseStudy'
+import {credit} from './credit'
 import {movie} from './movie'
 import {post} from './post'
 import {siteSettings} from './siteSettings'
-import {thought} from './thought'
 
-export const schemaTypes = [siteSettings, post, caseStudy, thought, book, movie, bodyText]
+export const schemaTypes = [siteSettings, post, credit, book, movie, bodyText]

@@ -8,5 +8,5 @@ const posts = await getPosts();
 ---
 <Base title="Writing" description={settings.writingIntro} section="writing">
   <PageHead label="Writing" title={settings.writingTitle} intro={settings.writingIntro} />
-  <EntryList entries={posts} base="/writing/" kind="post" />
+  <EntryList entries={posts} base="/writing/" />
 </Base>

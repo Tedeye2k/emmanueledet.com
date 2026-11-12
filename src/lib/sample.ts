@@ -26,15 +26,17 @@ export const posts = [
   { title: 'Notes from a year of reading slowly', slug: 'sample-reading-slowly', date: '2026-08-02', category: 'Personal', excerpt: 'A sample summary for a personal essay.', body },
 ];
 
-export const caseStudies = [
-  { title: 'Repositioning a fintech for first-time savers', slug: 'sample-fintech', client: 'Sample Client', role: 'Strategy & copy', year: '2026', excerpt: 'A sample summary: the problem in a sentence, and the result in another.', body },
-  { title: 'A content engine for a growing skincare brand', slug: 'sample-skincare', client: 'Another Client', role: 'SEO content', year: '2025', excerpt: 'A sample summary for a second project.', body },
+export const credits = [
+  { title: 'Sample Song One', artist: 'Artist Name', roles: ['Producer', 'Songwriter'], year: '2026', url: 'https://example.com' },
+  { title: 'A Second Sample Song', artist: 'Another Artist feat. Someone', roles: ['Producer'], year: '2026', url: 'https://example.com' },
+  { title: 'Third Sample', artist: 'Tedeye', roles: ['Artist', 'Producer', 'Songwriter'], year: '2025' },
+  { title: 'Fourth Sample Song', artist: 'Artist Name', roles: ['Songwriter'], year: '2024', url: 'https://example.com' },
 ];
 
-export const thoughts = [
-  { title: 'On finishing things', slug: 'sample-finishing', date: '2026-11-03', body: body.slice(0, 2) },
-  { title: 'The first draft is for you', slug: 'sample-first-draft', date: '2026-10-19', body: body.slice(0, 2) },
-  { title: 'What a good brief leaves out', slug: 'sample-brief', date: '2026-10-05', body: body.slice(0, 2) },
+export const socials = [
+  { label: 'Instagram', url: 'https://instagram.com/yourhandle' },
+  { label: 'X', url: 'https://x.com/yourhandle' },
+  { label: 'LinkedIn', url: 'https://www.linkedin.com/in/yourhandle' },
 ];
 
 export const books = [
