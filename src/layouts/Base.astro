@@ -19,7 +19,7 @@ const { title, description, section, home = false, center = false } = Astro.prop
 const settings = await getSettings();
 const pageTitle = title
   ? `${plainLine(title)} — ${settings.name}`
-  : `${settings.name} — ${settings.role}`;
+  : `${settings.name} | ${settings.seoTitle}`;
 const pageDescription = description || settings.seoDescription;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const contact = link('/contact/');

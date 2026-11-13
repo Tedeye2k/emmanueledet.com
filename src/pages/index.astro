@@ -13,6 +13,7 @@ const settings = await getSettings();
     <div class="hero-about">
       <span class="role mono">{settings.role}</span>
       <p class="intro">{settings.intro}</p>
+      {settings.proof && <p class="proof mono">{settings.proof}</p>}
       <div class="actions">
         <a class="btn-solid" href={link('/writing/')}>Read my work
           <svg aria-hidden="true" width="13" height="13" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M2.5 9.5l7-7M4 2.5h5.5V8"/></svg>

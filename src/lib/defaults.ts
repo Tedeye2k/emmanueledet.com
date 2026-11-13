@@ -2,18 +2,22 @@
 // Anything you type in Sanity replaces the matching line here.
 export const defaults = {
   name: 'Emmanuel Edet',
-  role: 'Writer & Creative Strategist',
+  role: 'Strategy · Writing · SEO',
   eyebrow: "Hello, I'm Emmanuel Edet",
-  headline: 'Writer,\n*curious* by\nnature.',
+  headline: 'Content & SEO\nstrategist,\n*curious* by\nnature.',
   intro:
-    'I help brands say what they mean, through strategy and writing. The rest of the time I make music, research, write about life, analyse markets, and ponder.',
+    'I help brands say what they mean, and get found for it. The rest of the time I make music and write about life.',
+  // Small line under the introduction. Empty = no line.
+  proof: 'Currently at Resparkit · Previously Solorosco Web Service',
   email: 'emmanueledet2k@gmail.com',
   musicUrl: 'https://resparkit.com/tedeye',
   // Web3Forms access key. Empty = the email button opens the visitor's email app.
   contactFormKey: 'fca68638-b413-4076-bbc4-e966e629d291',
   footerTagline: 'Working everywhere',
   seoDescription:
-    'Emmanuel Edet is a writer and creative strategist who helps brands say what they mean. Strategy, writing, music, and notes on books and film.',
+    'Emmanuel Edet is a content and SEO strategist who helps brands say what they mean and get found for it. Read his writing or get in touch.',
+  // The home page's name in the browser tab and on Google, after your name.
+  seoTitle: 'Content & SEO Strategist',
 
   writingTitle: 'Things I’ve *written*.',
   writingIntro:

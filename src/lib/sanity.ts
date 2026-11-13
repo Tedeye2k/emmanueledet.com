@@ -36,6 +36,7 @@ export type Entry = {
   slug: string;
   date?: string;
   category?: string;
+  client?: string;
   excerpt?: string;
   cover?: any;
   body?: any[];
@@ -92,7 +93,7 @@ export async function getSettings(): Promise<Settings> {
 export const getPosts = () =>
   fetchOr<Entry[]>(
     `*[_type == "post" && defined(slug.current)] | order(publishedAt desc)
-      { title, "slug": slug.current, "date": publishedAt, category, excerpt, "cover": coverImage, body }`,
+      { title, "slug": slug.current, "date": publishedAt, category, client, excerpt, "cover": coverImage, body }`,
     [],
     sample.posts,
   );
@@ -153,6 +154,9 @@ export function richLine(text: string): string {
 }
 
 export const plainLine = (text: string) => text.replace(/\*/g, '').replace(/\s*\r?\n\s*/g, ' ');
+
+/** "Resparkit" -> "Written for Resparkit". Empty when no client is set. */
+export const writtenFor = (client?: string) => (client?.trim() ? `Written for ${client.trim()}` : '');
 
 export function formatDate(value?: string): string {
   if (!value) return '';
