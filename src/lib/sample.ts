@@ -22,7 +22,7 @@ const body = [
 
 export const posts = [
   { title: 'Why most brand voices sound the same', slug: 'sample-brand-voices', date: '2026-10-28', category: 'Strategy', excerpt: 'A sample summary. One or two sentences that tell the reader what they will get.', body },
-  { title: 'SEO content that people actually finish', slug: 'sample-seo-content', date: '2026-09-14', category: 'SEO', excerpt: 'A sample summary for a second piece, so you can see how a list builds up.', body },
+  { title: 'SEO content that people actually finish', slug: 'sample-seo-content', date: '2026-09-14', category: 'SEO', client: 'Sample Client', excerpt: 'A sample summary for a second piece, so you can see how a list builds up.', body },
   { title: 'Notes from a year of reading slowly', slug: 'sample-reading-slowly', date: '2026-08-02', category: 'Personal', excerpt: 'A sample summary for a personal essay.', body },
 ];
 

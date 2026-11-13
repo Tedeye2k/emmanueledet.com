@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Article from '../../components/Article.astro';
-import { getPosts, formatDate } from '../../lib/sanity';
+import { getPosts, formatDate, writtenFor } from '../../lib/sanity';
 export async function getStaticPaths() {
   const posts = await getPosts();
   return posts.map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
@@ -9,5 +9,5 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 ---
 <Base title={entry.title} description={entry.excerpt} section="writing">
-  <Article entry={entry} backLabel="All writing" backHref="/writing/" meta={[formatDate(entry.date), entry.category]} />
+  <Article entry={entry} backLabel="All writing" backHref="/writing/" meta={[formatDate(entry.date), entry.category, writtenFor(entry.client)]} />
 </Base>

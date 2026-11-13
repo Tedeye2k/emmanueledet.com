@@ -21,6 +21,7 @@ export const post = defineType({
       type: 'string',
       options: {list: ['Strategy', 'SEO', 'Content marketing', 'Personal']},
     }),
+    defineField({name: 'client', title: 'Written for (optional)', type: 'string', description: 'For client work: the company it was written for, such as Resparkit. Shows as "Written for Resparkit". Leave empty for personal pieces.'}),
     defineField({name: 'excerpt', title: 'Summary', type: 'text', rows: 3, description: 'One or two sentences shown in the list and at the top of the piece.', validation: (rule) => rule.max(240)}),
     defineField({
       name: 'coverImage',

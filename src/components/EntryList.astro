@@ -1,5 +1,5 @@
 ---
-import { formatDate, link, type Entry } from '../lib/sanity';
+import { formatDate, link, writtenFor, type Entry } from '../lib/sanity';
 interface Props { entries: Entry[]; base: string; }
 const { entries, base } = Astro.props;
 ---
@@ -13,6 +13,7 @@ const { entries, base } = Astro.props;
           <span class="entry-meta mono">
             <span>{formatDate(entry.date)}</span>
             {entry.category && <span>{entry.category}</span>}
+            {writtenFor(entry.client) && <span>{writtenFor(entry.client)}</span>}
           </span>
           <span class="entry-main">
             <span class="entry-title">{entry.title}</span>
