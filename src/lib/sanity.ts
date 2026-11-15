@@ -100,6 +100,20 @@ export const getPosts = () =>
     sample.posts,
   );
 
+const writingFilter = `((_type == "post" && defined(slug.current)) || (_type == "externalPost" && defined(url)))`;
+const writingFields = `{ title, "slug": slug.current, "date": publishedAt, category, client, excerpt, url }`;
+
+/** Homepage pieces: up to three switched to "Show on homepage", or else the three newest. */
+export async function getSelected(): Promise<Entry[]> {
+  const featured = await fetchOr<Entry[]>(
+    `*[${writingFilter} && featured == true] | order(publishedAt desc, _createdAt desc)[0...3] ${writingFields}`,
+    [],
+    [],
+  );
+  if (featured.length > 0) return featured;
+  return (await getWriting()).slice(0, 3);
+}
+
 /** Everything for the Writing list: full articles plus links to pieces on other sites, newest first. */
 export const getWriting = () =>
   fetchOr<Entry[]>(

@@ -1,0 +1,25 @@
+---
+import { formatDate, link, type Entry } from '../lib/sanity';
+interface Props { entries: Entry[]; base: string; }
+const { entries, base } = Astro.props;
+const host = (url: string) => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'original site'; } };
+---
+<ul class="cards">
+  {entries.map((entry) => (
+    <li>
+      <a class="card" {...(entry.url
+        ? { href: entry.url, target: '_blank', rel: 'noopener' }
+        : { href: link(`${base}${entry.slug}/`) })}>
+        <span class="card-brand mono">{entry.client ? `Written for ${entry.client}` : 'Personal'}</span>
+        <span class="card-title">{entry.title}</span>
+        {entry.excerpt && <span class="card-excerpt">{entry.excerpt}</span>}
+        <span class="card-foot mono">
+          <span>{[formatDate(entry.date), entry.category].filter(Boolean).join(' · ')}</span>
+          <span class="card-cta">{entry.url ? `Read on ${host(entry.url)}` : 'Read'}
+            <svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M2.5 9.5l7-7M4 2.5h5.5V8"/></svg>
+          </span>
+        </span>
+      </a>
+    </li>
+  ))}
+</ul>

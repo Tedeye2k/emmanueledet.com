@@ -638,3 +638,32 @@ a.row:hover .entry-arrow { color: var(--fg); transform: translate(2px, -2px); }
 
 /* Text for screen readers only */
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+/* ---------- Selected work (home page) ---------- */
+main.hero { flex-direction: column; align-items: stretch; }
+main.hero .hero-grid { flex: 1 1 auto; min-height: min(72svh, 680px); align-content: center; }
+.home-work { margin-top: clamp(56px, 8vw, 120px); }
+.home-work-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.home-work-head .section-label { margin: 0; }
+
+/* ---------- Work cards (home page) ---------- */
+.cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.cards li { display: flex; }
+.card {
+  flex: 1; display: flex; flex-direction: column; gap: 16px;
+  padding: 28px; border: 1px solid var(--line); border-radius: 18px;
+  transition: border-color .2s ease;
+}
+.card:hover { border-color: var(--line-strong); }
+.card-brand { letter-spacing: 0.14em; color: var(--muted); }
+.card-title { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(22px, 2.2vw, 28px); line-height: 1.2; text-wrap: balance; }
+.card-excerpt { font-size: 15px; line-height: 1.6; color: var(--muted); }
+.card-foot { margin-top: auto; padding-top: 20px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 10px; letter-spacing: 0.12em; color: var(--dim); }
+.card-cta { display: inline-flex; align-items: center; gap: 8px; color: var(--fg); }
+@media (max-width: 860px) { .cards { grid-template-columns: minmax(0, 1fr); } }

@@ -1,7 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
-import { getSettings, link, richLine } from '../lib/sanity';
+import WorkCards from '../components/WorkCards.astro';
+import { getSettings, getSelected, link, richLine } from '../lib/sanity';
 const settings = await getSettings();
+// Pieces switched to "Show on homepage" in Sanity, or else the three newest.
+const selected = await getSelected();
 ---
 <Base section="home" home>
   <div class="hero-grid">
@@ -22,4 +25,14 @@ const settings = await getSettings();
       </div>
     </div>
   </div>
+
+  {selected.length > 0 && (
+    <section class="home-work" aria-labelledby="selected-work">
+      <div class="home-work-head">
+        <h2 class="section-label mono" id="selected-work">Selected work</h2>
+        <a class="text-link" href={link('/writing/')}>All writing</a>
+      </div>
+      <WorkCards entries={selected} base="/writing/" />
+    </section>
+  )}
 </Base>
