@@ -17,7 +17,16 @@ const body = [
   h2('A heading inside a piece'),
   p('Headings break long pieces into sections. You can also add links, bold and italic text, lists, and images with captions.'),
   quote('A pulled quote looks like this, for the one line you want people to remember.'),
+  { _type: 'callout', _key: 'c1', label: 'Key takeaway', text: 'A highlight box looks like this, for a tip or the one point you want to stand out.' },
+  { _type: 'dataTable', _key: 't1', headerRow: true, caption: 'A sample table', table: { rows: [
+    { _key: 'r1', cells: ['Channel', 'Goal', 'Result'] },
+    { _key: 'r2', cells: ['Blog', 'Search traffic', 'Up 40%'] },
+    { _key: 'r3', cells: ['Newsletter', 'Repeat readers', 'Up 25%'] },
+  ] } },
+  { _type: 'embed', _key: 'e1', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', caption: 'A sample video' },
+  { _type: 'divider', _key: 'd1', style: 'dots' },
   p('And then the piece carries on until it ends, where a small note invites the reader to get in touch.'),
+  { _type: 'button', _key: 'b1', label: 'A sample button', url: 'https://example.com' },
 ];
 
 export const posts = [

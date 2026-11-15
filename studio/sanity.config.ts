@@ -1,5 +1,6 @@
 import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
+import {table} from '@sanity/table'
 import {schemaTypes} from './schemaTypes'
 
 // "Site settings" is a single page of settings, not a list, so it gets
@@ -13,6 +14,7 @@ export default defineConfig({
   dataset: 'production',
 
   plugins: [
+    table(),
     structureTool({
       structure: (S) =>
         S.list()
@@ -28,7 +30,7 @@ export default defineConfig({
             S.documentTypeListItem('credit').title('Music credits'),
             S.divider(),
             S.documentTypeListItem('book').title('Books'),
-            S.documentTypeListItem('movie').title('Movies'),
+            S.documentTypeListItem('movie').title('Movies & series'),
           ]),
     }),
   ],
