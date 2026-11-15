@@ -34,7 +34,6 @@ export const post = defineType({
       name: 'coverImage',
       title: 'Cover image (optional)',
       type: 'image',
-      description: 'Shows in the Writing list, on the homepage card and at the top of the article.',
       options: {hotspot: true},
       fields: [defineField({name: 'alt', type: 'string', title: 'Description'})],
     }),

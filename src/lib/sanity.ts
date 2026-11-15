@@ -70,7 +70,6 @@ export type ShelfItem = {
 
 export type Credit = {
   title: string;
-  cover?: any;
   artist?: string;
   roles?: string[];
   year?: string;
@@ -92,7 +91,7 @@ export async function getSocials(): Promise<Social[]> {
 export const getCredits = () =>
   fetchOr<Credit[]>(
     `*[_type == "credit"] | order(year desc, _createdAt desc)
-      { title, artist, roles, year, url, cover }`,
+      { title, artist, roles, year, url }`,
     [],
     sample.credits,
   );
@@ -117,7 +116,7 @@ export const getPosts = () =>
   );
 
 const writingFilter = `((_type == "post" && defined(slug.current)) || (_type == "externalPost" && defined(url)))`;
-const writingFields = `{ title, "slug": slug.current, "date": publishedAt, category, client, excerpt, url, "cover": coverImage }`;
+const writingFields = `{ title, "slug": slug.current, "date": publishedAt, category, client, excerpt, url }`;
 
 /** Homepage pieces: up to three switched to "Show on homepage". None switched on = no section. */
 export const getSelected = () =>

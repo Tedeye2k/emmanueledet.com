@@ -20,17 +20,9 @@ export const credit = defineType({
     }),
     defineField({name: 'year', title: 'Year released', type: 'string', description: 'Newest shows first.', validation: (rule) => rule.regex(/^\d{4}$/).warning('Use four digits, like 2026')}),
     defineField({name: 'url', title: 'Link to listen (optional)', type: 'url'}),
-    defineField({
-      name: 'cover',
-      title: 'Cover art (optional)',
-      type: 'image',
-      description: 'The song or project artwork. Square works best.',
-      options: {hotspot: true},
-      fields: [defineField({name: 'alt', type: 'string', title: 'Description'})],
-    }),
   ],
   preview: {
-    select: {title: 'title', artist: 'artist', year: 'year', media: 'cover'},
-    prepare: ({title, artist, year, media}) => ({title, subtitle: [artist, year].filter(Boolean).join(' · '), media}),
+    select: {title: 'title', artist: 'artist', year: 'year'},
+    prepare: ({title, artist, year}) => ({title, subtitle: [artist, year].filter(Boolean).join(' · ')}),
   },
 })

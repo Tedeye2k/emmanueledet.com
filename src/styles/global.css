@@ -796,25 +796,6 @@ main.hero .hero-grid { flex: 1 1 auto; min-height: min(72svh, 680px); align-cont
   .diary-side { flex: 1 1 100%; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 8px 18px; padding-left: 80px; }
 }
 
-/* ---------- Cover images in lists ---------- */
-.entry.has-cover { grid-template-columns: 200px minmax(0, 1fr) 168px auto; align-items: center; }
-.entry.has-cover .entry-meta { align-self: baseline; }
-.entry-cover { width: 168px; height: 112px; object-fit: cover; border: 1px solid var(--line); }
-.card-cover { width: calc(100% + 56px); max-width: none; margin: -28px -28px 4px; aspect-ratio: 16 / 10; height: auto; object-fit: cover; border-bottom: 1px solid var(--line); }
-.card { overflow: hidden; }
-.row-with-art { flex-direction: row; align-items: center; gap: 18px; }
-.row-text { min-width: 0; display: flex; flex-direction: column; gap: 6px; }
-.row-art { flex: 0 0 64px; width: 64px; height: 64px; object-fit: cover; border: 1px solid var(--line); }
-.row-art-blank { display: flex; align-items: center; justify-content: center; background: var(--tile); color: var(--dim); }
-.row:has(.row-with-art) { align-items: center; }
-@media (max-width: 760px) {
-  .entry.has-cover { grid-template-columns: minmax(0, 1fr) auto; }
-  .entry.has-cover .entry-cover { grid-column: 1 / -1; grid-row: 2; width: 100%; height: auto; aspect-ratio: 3 / 2; }
-  .entry.has-cover .entry-main { grid-row: 3; }
-  .entry.has-cover .entry-arrow { grid-row: 3; }
-  .row-art { flex-basis: 52px; width: 52px; height: 52px; }
-}
-
 /* ---------- Extra article blocks ---------- */
 .prose mark { background: rgba(243, 240, 232, 0.16); color: var(--fg); padding: 0 3px; border-radius: 2px; }
 [data-theme="light"] .prose mark { background: rgba(255, 214, 102, 0.55); }
