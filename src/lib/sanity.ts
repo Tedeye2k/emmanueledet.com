@@ -108,13 +108,16 @@ export const getCredits = () =>
     sample.credits,
   );
 
-export async function getSettings(): Promise<Settings> {
+export async function getSettings(): Promise<Settings & { showSteps: boolean; showCta: boolean }> {
   const saved = await fetchOr<Record<string, unknown>>(`*[_id == "siteSettings"][0]`, {}, {});
   const merged: any = { ...defaults };
   for (const key of Object.keys(defaults)) {
     const value = saved[key];
     if (typeof value === 'string' && value.trim() !== '') merged[key] = value.trim();
   }
+  // On/off switches: only an explicit "off" in Sanity hides a section.
+  merged.showSteps = saved.showSteps !== false;
+  merged.showCta = saved.showCta !== false;
   if (useSample) merged.contactFormKey = 'preview-only';
   return merged;
 }
