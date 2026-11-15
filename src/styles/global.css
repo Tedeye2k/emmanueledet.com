@@ -632,96 +632,10 @@ main.hero .hero-grid { flex: 1 1 auto; min-height: min(72svh, 680px); align-cont
 .card-cta { display: inline-flex; align-items: center; gap: 8px; color: var(--fg); }
 @media (max-width: 860px) { .cards { grid-template-columns: minmax(0, 1fr); } }
 
-/* ---------- Ticket stubs: Books, Movies ---------- */
-.stubs {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 24px;
-}
-.stub {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  background: var(--tile);
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  overflow: hidden;
-}
-.stub-top { position: relative; height: 280px; overflow: hidden; }
-.stub-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
-/* Dark fade at the bottom of an image so the title stays readable */
-.stub-top.has-image::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(10, 10, 10, 0.92) 0%, rgba(10, 10, 10, 0.4) 45%, rgba(10, 10, 10, 0) 72%);
-}
-.stub-top-inner {
-  position: relative;
-  z-index: 1;
-  height: 100%;
-  padding: 22px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 16px;
-}
-.stub-label {
-  align-self: flex-start;
-  padding: 5px 9px;
-  border: 1px solid var(--line-strong);
-  border-radius: 4px;
-  letter-spacing: 0.14em;
-  color: var(--muted);
-}
-.stub-heading { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-.stub-title {
-  margin: 0;
-  font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 400;
-  font-size: 30px;
-  line-height: 1.05;
-  letter-spacing: -0.01em;
-  color: var(--fg);
-  overflow-wrap: anywhere;
-}
-.stub-credits { letter-spacing: 0.12em; line-height: 1.5; color: var(--muted); }
-.has-image .stub-label { color: #FFFFFF; background: rgba(0, 0, 0, 0.45); border-color: rgba(255, 255, 255, 0.4); }
-.has-image .stub-title { color: #FFFFFF; }
-.has-image .stub-credits { color: rgba(255, 255, 255, 0.85); }
-
-/* The perforated tear line, with a half-circle notch on each side */
-.stub-tear { display: flex; align-items: center; }
-.stub-tear span {
-  flex: 0 0 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--bg);
-  border: 1px solid var(--line);
-}
-.stub-tear span:first-child { margin-left: -12px; }
-.stub-tear span:last-child { margin-right: -12px; }
-.stub-tear i { flex: 1 1 auto; margin: 0 8px; border-top: 2px dashed var(--line-strong); }
-
-.stub-body {
-  flex: 1 1 auto;
-  padding: 20px 22px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-.stub-details { margin: 0; display: flex; flex-wrap: wrap; gap: 12px 28px; }
-.stub-details div { display: flex; flex-direction: column; gap: 5px; }
-.stub-details dt { letter-spacing: 0.12em; color: var(--dim); }
-.stub-details dd { margin: 0; font-size: 15px; font-weight: 500; color: var(--fg); }
+/* ---------- Stars and stamp (books, movies, full reviews) ---------- */
 .stub-stars { position: relative; display: inline-block; align-self: flex-start; font-size: 18px; line-height: 1; letter-spacing: 0.12em; }
 .stub-stars-off { color: var(--line-strong); }
 .stub-stars-on { position: absolute; top: 0; left: 0; overflow: hidden; white-space: nowrap; color: var(--fg); }
-.stub-note { margin: 0; font-size: 16px; line-height: 1.55; color: var(--body); }
-.stub-foot { margin-top: auto; display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
 .stub-stamp {
   padding: 6px 10px;
   border: 1.5px solid var(--fg);
@@ -732,33 +646,11 @@ main.hero .hero-grid { flex: 1 1 auto; min-height: min(72svh, 680px); align-cont
 }
 .stub-stamp.is-maybe,
 .stub-stamp.is-no { color: var(--muted); border-color: var(--line-strong); transform: rotate(2deg); }
-.stub-btn {
-  align-self: stretch;
-  min-height: 46px;
-  padding: 0 20px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  background: var(--fg);
-  color: var(--bg);
-  border-radius: 999px;
-  font-size: 15px;
-  font-weight: 500;
-  transition: background .2s ease;
-}
-.stub-btn:hover { background: var(--fg-strong); color: var(--bg); }
 
 /* ---------- A full book or movie review ---------- */
 .review-poster { margin: 40px 0 0; max-width: 300px; aspect-ratio: 2 / 3; border: 1px solid var(--line); overflow: hidden; }
 .review-poster img { width: 100%; height: 100%; object-fit: cover; }
 .review-facts { margin-top: 28px; display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; }
-
-/* Phones: one stub per row, so images get taller and blank tops get shorter */
-@media (max-width: 600px) {
-  .stub-top { height: 340px; }
-  .stub-top:not(.has-image) { height: 180px; }
-}
 
 /* ---------- Editorial reviews: Books ---------- */
 .bookrev-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
@@ -852,4 +744,54 @@ main.hero .hero-grid { flex: 1 1 auto; min-height: min(72svh, 680px); align-cont
 
 @media (max-width: 600px) {
   .bookrev-cover { flex-basis: 180px; }
+}
+
+/* ---------- Diary: Movies ---------- */
+.diary { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-strong); }
+.diary-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 16px 28px;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--line);
+}
+.diary-poster {
+  flex: 0 0 72px;
+  height: 108px;
+  background: var(--tile);
+  border: 1px solid var(--line);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.diary-poster img { width: 100%; height: 100%; object-fit: cover; }
+.diary-initial { font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-size: 32px; color: var(--muted); }
+.diary-main { flex: 1 1 340px; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.diary-tag { padding: 3px 8px; border: 1px solid var(--line-strong); border-radius: 4px; letter-spacing: 0.14em; color: var(--muted); }
+.diary-title {
+  margin: 0;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(24px, 2.6vw, 30px);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+}
+.diary-credits { letter-spacing: 0.14em; line-height: 1.6; color: var(--dim); }
+.diary-note { margin: 4px 0 0; max-width: 580px; font-size: 16px; line-height: 1.6; color: var(--body); text-wrap: pretty; }
+.diary-side { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+.diary-stars { align-self: auto; font-size: 17px; }
+.diary-again { display: inline-flex; align-items: center; gap: 6px; letter-spacing: 0.14em; color: var(--fg); }
+.diary-again.is-maybe, .diary-again.is-no { color: var(--dim); }
+.diary-date { letter-spacing: 0.14em; color: var(--dim); }
+.diary-link { gap: 8px; }
+
+/* Phones: stars, rewatch and date move under the title */
+@media (max-width: 600px) {
+  .diary-row { gap: 14px 20px; }
+  .diary-poster { flex-basis: 60px; height: 90px; }
+  .diary-main { flex-basis: calc(100% - 80px); }
+  .diary-side { flex: 1 1 100%; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 8px 18px; padding-left: 80px; }
 }
