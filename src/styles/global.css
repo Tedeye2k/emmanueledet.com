@@ -836,3 +836,28 @@ main.hero .hero-grid { flex: 1 1 auto; min-height: min(72svh, 680px); align-cont
   .gallery-3 .gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .prose th, .prose td { padding: 10px 12px; }
 }
+
+/* ---------- How I work + closing call to action (home page) ---------- */
+.home-process { margin-top: clamp(72px, 9vw, 128px); }
+.home-process .section-label { margin-bottom: 20px; }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 24px; }
+.step { display: grid; grid-row: span 4; grid-template-rows: subgrid; row-gap: 14px; align-content: start; padding-top: 24px; border-top: 1px solid var(--line-strong); }
+.step-num { letter-spacing: 0.14em; color: var(--dim); }
+.step-title { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(24px, 2.4vw, 30px); line-height: 1.15; }
+.step-text { font-size: 16px; line-height: 1.6; color: var(--muted); max-width: 340px; }
+.step-gets { padding-top: 16px; display: flex; flex-direction: column; gap: 8px; font-size: 15px; line-height: 1.55; color: var(--body); max-width: 340px; }
+.step-gets-label { letter-spacing: 0.14em; color: var(--dim); }
+.home-cta {
+  margin-top: clamp(80px, 10vw, 144px);
+  padding: clamp(40px, 5vw, 64px) 0 clamp(16px, 2vw, 24px);
+  border-top: 1px solid var(--line);
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; flex-wrap: wrap;
+}
+.cta-line { margin: 0; font-family: 'Playfair Display', Georgia, serif; font-size: clamp(32px, 4.6vw, 60px); line-height: 1.05; letter-spacing: -0.02em; }
+.cta-line em { font-style: italic; }
+@media (max-width: 1080px) {
+  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 40px; }
+}
+@media (max-width: 640px) {
+  .steps { grid-template-columns: minmax(0, 1fr); row-gap: 32px; }
+}

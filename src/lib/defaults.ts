@@ -19,6 +19,9 @@ export const defaults = {
   // The home page's name in the browser tab and on Google, after your name.
   seoTitle: 'Content & SEO Strategist',
 
+  // The big line at the bottom of the home page.
+  ctaLine: 'Have a site that should be\ngetting *more traffic*?',
+
   writingTitle: 'Things I’ve *written*.',
   writingIntro:
     'Strategy, SEO, and content marketing work, next to the personal pieces I write because I can’t help it.',
@@ -33,6 +36,14 @@ export const defaults = {
   contactIntro:
     'Got a project, a question, or a record I should hear? Pick whichever way suits you.',
 };
+
+// The "How I work" steps on the home page until they are filled in on Sanity.
+export const defaultSteps = [
+  { title: 'Research', text: 'I learn the brand, its market and audience, then study the keywords and competitors.', gets: 'A clear picture of what your audience searches for and who you’re up against.' },
+  { title: 'Plan', text: 'I turn the research into content pillars and topic clusters, so every piece has a reason to exist.', gets: 'A content plan with priorities.' },
+  { title: 'Write', text: 'I write new pieces and refresh old ones that are losing traffic.', gets: 'Content that’s useful to readers and built to rank.' },
+  { title: 'Track', text: 'I watch what’s working in Search Console and GA4, then adjust the plan.', gets: 'Regular reporting and a plan that keeps getting sharper.' },
+];
 
 // Shown on the Contact page until "Social links" is filled in on Sanity.
 export const defaultSocials = [

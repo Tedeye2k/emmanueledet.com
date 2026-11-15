@@ -25,6 +25,36 @@ export const siteSettings = defineType({
     defineField({name: 'intro', title: 'Introduction', type: 'text', rows: 4, group: 'home', description: 'Two or three sentences about what you do.'}),
     defineField({name: 'proof', title: 'Small line under the introduction', type: 'string', group: 'home', description: 'Where you work or who you have written for. For example: Currently at Resparkit · Previously Solorosco Web Service'}),
 
+    defineField({
+      name: 'steps',
+      title: 'How I work',
+      type: 'array',
+      group: 'home',
+      description: 'The numbered steps near the bottom of the home page, in this order. Drag to reorder. Leave empty to use the standard four steps.',
+      of: [
+        {
+          type: 'object',
+          name: 'step',
+          title: 'Step',
+          fields: [
+            defineField({name: 'title', title: 'Step name', type: 'string', description: 'One or two words, such as Research', validation: (rule) => rule.required()}),
+            defineField({name: 'text', title: 'What you do', type: 'text', rows: 2, validation: (rule) => rule.required()}),
+            defineField({name: 'gets', title: 'What the client gets (optional)', type: 'text', rows: 2, description: 'Shows under a small "You get" label.'}),
+          ],
+          preview: {select: {title: 'title', subtitle: 'text'}},
+        },
+      ],
+      validation: (rule) => rule.max(4),
+    }),
+    defineField({
+      name: 'ctaLine',
+      title: 'Closing line',
+      type: 'text',
+      rows: 2,
+      group: 'home',
+      description: `The big line at the bottom of the home page, next to the "Let's talk" button. Press Enter to start a new line. ${italicTip}`,
+    }),
+
     defineField({name: 'writingTitle', title: 'Writing: heading', type: 'string', group: 'pages', description: italicTip}),
     defineField({name: 'writingIntro', title: 'Writing: introduction', type: 'text', rows: 2, group: 'pages'}),
     defineField({name: 'musicTitle', title: 'Music: heading', type: 'string', group: 'pages', description: italicTip}),
