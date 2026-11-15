@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import WorkCards from '../components/WorkCards.astro';
 import { getSettings, getSelected, link, richLine } from '../lib/sanity';
 const settings = await getSettings();
-// Pieces switched to "Show on homepage" in Sanity, or else the three newest.
+// Pieces switched to "Show on homepage" in Sanity. None switched on = no section.
 const selected = await getSelected();
 ---
 <Base section="home" home>
