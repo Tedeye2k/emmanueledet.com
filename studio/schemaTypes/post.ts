@@ -26,7 +26,7 @@ export const post = defineType({
       name: 'featured',
       title: 'Show on homepage',
       type: 'boolean',
-      description: 'Turn on for your best pieces. The homepage shows up to three, newest first. If none are on, it shows your three newest pieces.',
+      description: 'Turn on for your best pieces. The homepage shows up to three, newest first. If none are on, the homepage has no Selected work section.',
       initialValue: false,
     }),
     defineField({name: 'excerpt', title: 'Summary', type: 'text', rows: 3, description: 'One or two sentences shown in the list and at the top of the piece.', validation: (rule) => rule.max(240)}),
