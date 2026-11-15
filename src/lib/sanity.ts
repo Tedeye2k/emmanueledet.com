@@ -1,7 +1,7 @@
 import { createClient } from '@sanity/client';
 import { createImageUrlBuilder } from '@sanity/image-url';
 import { toHTML } from '@portabletext/to-html';
-import { defaults, defaultSocials, type Settings } from './defaults';
+import { defaults, defaultSocials, defaultSteps, type Settings } from './defaults';
 import * as sample from './sample';
 
 export const projectId = 'ojybom2y';
@@ -86,6 +86,18 @@ export async function getSocials(): Promise<Social[]> {
   );
   const filled = saved.filter((item) => item?.label && item?.url);
   return filled.length > 0 ? filled : defaultSocials;
+}
+
+export type Step = { title: string; text: string; gets?: string };
+
+export async function getSteps(): Promise<Step[]> {
+  const saved = await fetchOr<Step[]>(
+    `*[_id == "siteSettings"][0].steps[]{ title, text, gets }`,
+    [],
+    [],
+  );
+  const filled = (saved || []).filter((step) => step?.title && step?.text);
+  return filled.length > 0 ? filled : defaultSteps;
 }
 
 export const getCredits = () =>

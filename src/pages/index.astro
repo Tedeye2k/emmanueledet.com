@@ -1,10 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
 import WorkCards from '../components/WorkCards.astro';
-import { getSettings, getSelected, link, richLine } from '../lib/sanity';
+import { getSettings, getSelected, getSteps, link, richLine } from '../lib/sanity';
 const settings = await getSettings();
 // Pieces switched to "Show on homepage" in Sanity. None switched on = no section.
 const selected = await getSelected();
+const steps = await getSteps();
 ---
 <Base section="home" home>
   <div class="hero-grid">
@@ -35,4 +36,25 @@ const selected = await getSelected();
       <WorkCards entries={selected} base="/writing/" />
     </section>
   )}
+
+  <section class="home-process" aria-labelledby="how-i-work">
+    <h2 class="section-label mono" id="how-i-work">How I work</h2>
+    <ol class="steps">
+      {steps.map((step, i) => (
+        <li class="step">
+          <span class="step-num mono">{String(i + 1).padStart(2, '0')}</span>
+          <span class="step-title">{step.title}</span>
+          <span class="step-text">{step.text}</span>
+          {step.gets ? <span class="step-gets"><span class="step-gets-label mono">You get</span>{step.gets}</span> : <span />}
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="home-cta">
+    <p class="cta-line" set:html={richLine(settings.ctaLine)} />
+    <a class="btn-solid" href={link('/contact/')}>Let’s talk
+      <svg aria-hidden="true" width="13" height="13" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M2.5 9.5l7-7M4 2.5h5.5V8"/></svg>
+    </a>
+  </section>
 </Base>
