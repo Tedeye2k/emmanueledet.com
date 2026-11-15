@@ -1,13 +1,29 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Article from '../../components/Article.astro';
-import { getPosts, formatDate, writtenFor } from '../../lib/sanity';
+import { getPosts, formatDate, writtenFor, imageUrl, link } from '../../lib/sanity';
 export async function getStaticPaths() {
   const posts = await getPosts();
   return posts.map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
 }
 const { entry } = Astro.props;
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+const siteUrl = new URL(link('/'), Astro.site).href;
+const cover = imageUrl(entry.cover, 1200);
+const article = {
+  '@type': 'BlogPosting',
+  '@id': `${pageUrl}#article`,
+  headline: entry.title,
+  description: entry.excerpt,
+  url: pageUrl,
+  mainEntityOfPage: pageUrl,
+  datePublished: entry.date,
+  articleSection: entry.category,
+  image: cover || undefined,
+  author: { '@id': `${siteUrl}#person` },
+  publisher: { '@id': `${siteUrl}#person` },
+};
 ---
-<Base title={entry.title} description={entry.excerpt} section="writing">
+<Base title={entry.title} description={entry.excerpt} section="writing" schema={[article]}>
   <Article entry={entry} backLabel="All writing" backHref="/writing/" meta={[formatDate(entry.date), entry.category, writtenFor(entry.client)]} />
 </Base>

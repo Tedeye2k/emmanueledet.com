@@ -2,11 +2,11 @@
 // Anything you type in Sanity replaces the matching line here.
 export const defaults = {
   name: 'Emmanuel Edet',
-  role: 'Strategy · Writing · SEO',
+  role: 'SEO content strategy · Long-form writing · Content refreshes',
   eyebrow: "Hello, I'm Emmanuel Edet",
   headline: 'Content & SEO\nstrategist,\n*curious* by\nnature.',
   intro:
-    'I help brands say what they mean, and get found for it. The rest of the time I make music and write about life.',
+    'I help brands say what they mean, and get found for it, on Google and in AI answers. From market and keyword research to content pillars, writing, and tracking results in Search Console and GA4. The rest of the time I make music and write about life.',
   // Small line under the introduction. Empty = no line.
   proof: 'Currently at Resparkit · Previously Solorosco Web Service',
   email: 'emmanueledet2k@gmail.com',
@@ -41,8 +41,8 @@ export const defaults = {
 export const defaultSteps = [
   { title: 'Research', text: 'I learn the brand, its market and audience, then study the keywords and competitors.', gets: 'A clear picture of what your audience searches for and who you’re up against.' },
   { title: 'Plan', text: 'I turn the research into content pillars and topic clusters, so every piece has a reason to exist.', gets: 'A content plan with priorities.' },
-  { title: 'Write', text: 'I write new pieces and refresh old ones that are losing traffic.', gets: 'Content that’s useful to readers and built to rank.' },
-  { title: 'Track', text: 'I watch what’s working in Search Console and GA4, then adjust the plan.', gets: 'Regular reporting and a plan that keeps getting sharper.' },
+  { title: 'Write', text: 'I write new pieces and refresh old ones that are losing traffic.', gets: 'Content that’s useful to readers and built to rank, in search and in AI answers.' },
+  { title: 'Track', text: 'I watch what’s working in Search Console and GA4, including traffic from AI tools, then adjust the plan.', gets: 'Regular reporting and a plan that keeps getting sharper.' },
 ];
 
 // Shown on the Contact page until "Social links" is filled in on Sanity.
@@ -50,6 +50,18 @@ export const defaultSocials = [
   { label: 'Instagram', url: 'https://www.instagram.com/thetedeye' },
   { label: 'X', url: 'https://x.com/the_tedeye' },
   { label: 'LinkedIn', url: 'https://www.linkedin.com/in/tedeye/' },
+];
+
+// What the hidden "structured data" tells Google and AI tools you know about.
+export const expertise = [
+  'Content strategy',
+  'Search engine optimization',
+  'Answer engine optimization',
+  'Generative engine optimization',
+  'Keyword research',
+  'Content marketing',
+  'Music production',
+  'Songwriting',
 ];
 
 export type Settings = typeof defaults;

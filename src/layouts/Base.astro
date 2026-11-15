@@ -5,7 +5,8 @@ import '@fontsource/dm-sans/400.css';
 import '@fontsource/dm-sans/500.css';
 import '@fontsource/dm-mono/400.css';
 import '../styles/global.css';
-import { getSettings, link, plainLine } from '../lib/sanity';
+import { getSettings, getSocials, link, plainLine } from '../lib/sanity';
+import { expertise } from '../lib/defaults';
 
 interface Props {
   title?: string;
@@ -13,9 +14,11 @@ interface Props {
   section?: 'home' | 'writing' | 'books' | 'music' | 'movies' | 'contact';
   home?: boolean;
   center?: boolean;
+  /** Extra structured data for this page, such as an article. */
+  schema?: Record<string, unknown>[];
 }
 
-const { title, description, section, home = false, center = false } = Astro.props;
+const { title, description, section, home = false, center = false, schema = [] } = Astro.props;
 const settings = await getSettings();
 const pageTitle = title
   ? `${plainLine(title)} — ${settings.name}`
@@ -23,6 +26,28 @@ const pageTitle = title
 const pageDescription = description || settings.seoDescription;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const contact = link('/contact/');
+
+// Structured data: tells Google and AI tools who you are and where your work is.
+const siteUrl = new URL(link('/'), Astro.site).href;
+const socials = await getSocials();
+const person = {
+  '@type': 'Person',
+  '@id': `${siteUrl}#person`,
+  name: settings.name,
+  url: siteUrl,
+  jobTitle: plainLine(settings.seoTitle),
+  description: settings.seoDescription,
+  knowsAbout: expertise,
+  sameAs: [...socials.map((s) => s.url), settings.musicUrl].filter(Boolean),
+};
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    person,
+    { '@type': 'WebSite', '@id': `${siteUrl}#website`, url: siteUrl, name: settings.name, publisher: { '@id': `${siteUrl}#person` } },
+    ...schema,
+  ],
+};
 
 const nav = [
   { label: 'Writing', href: link('/writing/'), id: 'writing' },
@@ -45,6 +70,7 @@ const nav = [
 <meta property="og:url" content={canonical}>
 <meta name="twitter:card" content="summary">
 <link rel="icon" type="image/svg+xml" href={link('/favicon.svg')}>
+<script type="application/ld+json" set:html={JSON.stringify(structuredData).replace(/</g, '\\u003c')} />
 
 <!-- Apply the saved theme before the page paints, so there is no flash -->
 <script is:inline>
