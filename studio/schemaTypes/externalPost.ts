@@ -51,10 +51,18 @@ export const externalPost = defineType({
       description: 'One or two sentences shown under the title in the list.',
       validation: (rule) => rule.max(240),
     }),
+    defineField({
+      name: 'coverImage',
+      title: 'Cover image (optional)',
+      type: 'image',
+      description: 'Shows next to the title in the Writing list.',
+      options: {hotspot: true},
+      fields: [defineField({name: 'alt', type: 'string', title: 'Description'})],
+    }),
   ],
   orderings: [{title: 'Newest first', name: 'dateDesc', by: [{field: 'publishedAt', direction: 'desc'}]}],
   preview: {
-    select: {title: 'title', client: 'client', date: 'publishedAt'},
-    prepare: ({title, client, date}) => ({title, subtitle: [client, date].filter(Boolean).join(' · ')}),
+    select: {title: 'title', client: 'client', date: 'publishedAt', media: 'coverImage'},
+    prepare: ({title, client, date, media}) => ({title, subtitle: [client, date].filter(Boolean).join(' · '), media}),
   },
 })

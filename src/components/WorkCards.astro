@@ -1,5 +1,5 @@
 ---
-import { formatDate, link, type Entry } from '../lib/sanity';
+import { formatDate, link, imageUrl, imageAlt, type Entry } from '../lib/sanity';
 interface Props { entries: Entry[]; base: string; }
 const { entries, base } = Astro.props;
 const host = (url: string) => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'original site'; } };
@@ -10,6 +10,7 @@ const host = (url: string) => { try { return new URL(url).hostname.replace(/^www
       <a class="card" {...(entry.url
         ? { href: entry.url, target: '_blank', rel: 'noopener' }
         : { href: link(`${base}${entry.slug}/`) })}>
+        {imageUrl(entry.cover, 720, 450) && <img class="card-cover" src={imageUrl(entry.cover, 720, 450)} alt={imageAlt(entry.cover)} width="720" height="450" loading="lazy" />}
         <span class="card-brand mono">{entry.client ? `Written for ${entry.client}` : 'Personal'}</span>
         <span class="card-title">{entry.title}</span>
         {entry.excerpt && <span class="card-excerpt">{entry.excerpt}</span>}

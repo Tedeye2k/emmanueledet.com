@@ -70,6 +70,7 @@ export type ShelfItem = {
 
 export type Credit = {
   title: string;
+  cover?: any;
   artist?: string;
   roles?: string[];
   year?: string;
@@ -91,7 +92,7 @@ export async function getSocials(): Promise<Social[]> {
 export const getCredits = () =>
   fetchOr<Credit[]>(
     `*[_type == "credit"] | order(year desc, _createdAt desc)
-      { title, artist, roles, year, url }`,
+      { title, artist, roles, year, url, cover }`,
     [],
     sample.credits,
   );
@@ -116,7 +117,7 @@ export const getPosts = () =>
   );
 
 const writingFilter = `((_type == "post" && defined(slug.current)) || (_type == "externalPost" && defined(url)))`;
-const writingFields = `{ title, "slug": slug.current, "date": publishedAt, category, client, excerpt, url }`;
+const writingFields = `{ title, "slug": slug.current, "date": publishedAt, category, client, excerpt, url, "cover": coverImage }`;
 
 /** Homepage pieces: up to three switched to "Show on homepage". None switched on = no section. */
 export const getSelected = () =>
@@ -131,7 +132,7 @@ export const getWriting = () =>
   fetchOr<Entry[]>(
     `*[(_type == "post" && defined(slug.current)) || (_type == "externalPost" && defined(url))]
       | order(publishedAt desc, _createdAt desc)
-      { title, "slug": slug.current, "date": publishedAt, category, client, excerpt, url }`,
+      ${writingFields}`,
     [],
     sample.writing,
   );
@@ -187,18 +188,102 @@ export function imageAlt(source: any, fallback = ''): string {
 const escapeHtml = (text: string) =>
   text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
+/** Turns a normal YouTube, Vimeo, Spotify, SoundCloud or Apple Music link into an embed. */
+export function embedFor(raw: string): { src: string; kind: 'video' | 'audio'; height?: number } | null {
+  let url: URL;
+  try { url = new URL(raw); } catch { return null; }
+  const host = url.hostname.replace(/^www\.|^m\./, '');
+  if (host === 'youtu.be' || host.endsWith('youtube.com')) {
+    const id = host === 'youtu.be'
+      ? url.pathname.slice(1)
+      : url.searchParams.get('v') || url.pathname.match(/\/(?:shorts|embed|live)\/([^/?]+)/)?.[1];
+    return id ? { src: `https://www.youtube-nocookie.com/embed/${id}`, kind: 'video' } : null;
+  }
+  if (host === 'vimeo.com') {
+    const id = url.pathname.match(/\/(\d+)/)?.[1];
+    return id ? { src: `https://player.vimeo.com/video/${id}`, kind: 'video' } : null;
+  }
+  if (host === 'open.spotify.com') {
+    const m = url.pathname.match(/\/(track|album|playlist|episode|show|artist)\/([A-Za-z0-9]+)/);
+    return m ? { src: `https://open.spotify.com/embed/${m[1]}/${m[2]}`, kind: 'audio', height: m[1] === 'track' || m[1] === 'episode' ? 152 : 352 } : null;
+  }
+  if (host === 'soundcloud.com' || host === 'on.soundcloud.com') {
+    const isSet = url.pathname.includes('/sets/');
+    return { src: `https://w.soundcloud.com/player/?url=${encodeURIComponent(raw)}&color=%23111111&visual=false`, kind: 'audio', height: isSet ? 450 : 166 };
+  }
+  if (host === 'music.apple.com') {
+    const isSong = url.searchParams.has('i') || url.pathname.includes('/song/');
+    return { src: `https://embed.music.apple.com${url.pathname}${url.search}`, kind: 'audio', height: isSong ? 175 : 450 };
+  }
+  return null;
+}
+
+const figcaption = (text?: string) => (text ? `<figcaption>${escapeHtml(text)}</figcaption>` : '');
+
 /** Turns the article text written in Sanity into HTML. */
 export function bodyHtml(blocks: any[] | undefined): string {
   if (!blocks?.length) return '';
   return toHTML(blocks, {
     components: {
+      marks: {
+        highlight: ({ children }: any) => `<mark>${children}</mark>`,
+        link: ({ children, value }: any) => {
+          const href = typeof value?.href === 'string' ? value.href : '';
+          if (!href) return children;
+          const external = /^https?:/.test(href);
+          return `<a href="${escapeHtml(href)}"${external ? ' target="_blank" rel="noopener"' : ''}>${children}</a>`;
+        },
+      },
       types: {
         image: ({ value }: any) => {
-          const src = imageUrl(value, 1400);
+          const size = ['wide', 'small'].includes(value.size) ? value.size : 'normal';
+          const src = imageUrl(value, size === 'wide' ? 2000 : 1400);
           if (!src) return '';
-          const caption = value.caption ? `<figcaption>${escapeHtml(value.caption)}</figcaption>` : '';
-          return `<figure><img src="${src}" alt="${escapeHtml(value.alt || '')}" loading="lazy">${caption}</figure>`;
+          return `<figure class="fig-${size}"><img src="${src}" alt="${escapeHtml(value.alt || '')}" loading="lazy">${figcaption(value.caption)}</figure>`;
         },
+        gallery: ({ value }: any) => {
+          const images = (value.images || []).filter((img: any) => img?.asset);
+          if (!images.length) return '';
+          const items = images
+            .map((img: any) => `<img src="${imageUrl(img, 900, 900)}" alt="${escapeHtml(img.alt || '')}" loading="lazy">`)
+            .join('');
+          return `<figure class="gallery gallery-${Math.min(images.length, 4)}"><div class="gallery-grid">${items}</div>${figcaption(value.caption)}</figure>`;
+        },
+        dataTable: ({ value }: any) => {
+          const rows: string[][] = (value.table?.rows || []).map((r: any) => (r.cells || []).map((c: any) => String(c ?? '')));
+          if (!rows.length) return '';
+          const width = Math.max(...rows.map((r) => r.length));
+          const cell = (tag: string, text: string) => `<${tag}${tag === 'th' ? ' scope="col"' : ''}>${escapeHtml(text)}</${tag}>`;
+          const line = (r: string[], tag: string) => `<tr>${Array.from({ length: width }, (_, i) => cell(tag, r[i] || '')).join('')}</tr>`;
+          const head = value.headerRow !== false && rows.length > 1 ? `<thead>${line(rows[0], 'th')}</thead>` : '';
+          const bodyRows = (head ? rows.slice(1) : rows).map((r) => line(r, 'td')).join('');
+          const caption = value.caption ? `<caption>${escapeHtml(value.caption)}</caption>` : '';
+          return `<div class="table-wrap" role="region" aria-label="${escapeHtml(value.caption || 'Table')}" tabindex="0"><table>${caption}${head}<tbody>${bodyRows}</tbody></table></div>`;
+        },
+        embed: ({ value }: any) => {
+          if (!value?.url) return '';
+          const e = embedFor(value.url);
+          if (!e) {
+            return `<p class="embed-link"><a href="${escapeHtml(value.url)}" target="_blank" rel="noopener">${escapeHtml(value.caption || value.url)}</a></p>`;
+          }
+          const title = escapeHtml(value.caption || (e.kind === 'video' ? 'Video' : 'Music player'));
+          const frame = e.kind === 'video'
+            ? `<div class="embed-video"><iframe src="${e.src}" title="${title}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`
+            : `<iframe class="embed-audio" src="${e.src}" title="${title}" height="${e.height}" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>`;
+          return `<figure class="embed">${frame}${figcaption(value.caption)}</figure>`;
+        },
+        callout: ({ value }: any) => {
+          if (!value?.text) return '';
+          const label = value.label ? `<span class="callout-label">${escapeHtml(value.label)}</span>` : '';
+          const text = escapeHtml(value.text).replace(/\r?\n/g, '<br>');
+          return `<aside class="callout">${label}<p>${text}</p></aside>`;
+        },
+        button: ({ value }: any) => {
+          if (!value?.url || !value?.label) return '';
+          const external = /^https?:/.test(value.url);
+          return `<p class="prose-btn"><a class="btn-solid" href="${escapeHtml(value.url)}"${external ? ' target="_blank" rel="noopener"' : ''}>${escapeHtml(value.label)}</a></p>`;
+        },
+        divider: ({ value }: any) => (value?.style === 'dots' ? '<hr class="hr-dots">' : '<hr>'),
       },
     },
   });

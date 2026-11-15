@@ -1,5 +1,5 @@
 ---
-import { formatDate, link, writtenFor, type Entry } from '../lib/sanity';
+import { formatDate, link, writtenFor, imageUrl, imageAlt, type Entry } from '../lib/sanity';
 interface Props { entries: Entry[]; base: string; }
 const { entries, base } = Astro.props;
 ---
@@ -7,9 +7,11 @@ const { entries, base } = Astro.props;
   <p class="empty mono">Nothing here yet. Check back soon.</p>
 ) : (
   <ul class="entries">
-    {entries.map((entry) => (
+    {entries.map((entry) => {
+      const cover = imageUrl(entry.cover, 480, 320);
+      return (
       <li>
-        <a class="entry" {...(entry.url
+        <a class={cover ? 'entry has-cover' : 'entry'} {...(entry.url
           ? { href: entry.url, target: '_blank', rel: 'noopener' }
           : { href: link(`${base}${entry.slug}/`) })}>
           <span class="entry-meta mono">
@@ -21,10 +23,12 @@ const { entries, base } = Astro.props;
             <span class="entry-title">{entry.title}</span>
             {entry.excerpt && <span class="entry-excerpt">{entry.excerpt}</span>}
           </span>
+          {cover && <img class="entry-cover" src={cover} alt={imageAlt(entry.cover)} width="480" height="320" loading="lazy" />}
           {entry.url && <span class="sr-only">(opens on another site)</span>}
           <svg class="entry-arrow" aria-hidden="true" width="14" height="14" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M2.5 9.5l7-7M4 2.5h5.5V8"/></svg>
         </a>
       </li>
-    ))}
+      );
+    })}
   </ul>
 )}
