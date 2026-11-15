@@ -40,6 +40,8 @@ export type Entry = {
   excerpt?: string;
   cover?: any;
   body?: any[];
+  /** Set for pieces published on another site: the list links straight there. */
+  url?: string;
 };
 
 export type ShelfItem = {
@@ -96,6 +98,16 @@ export const getPosts = () =>
       { title, "slug": slug.current, "date": publishedAt, category, client, excerpt, "cover": coverImage, body }`,
     [],
     sample.posts,
+  );
+
+/** Everything for the Writing list: full articles plus links to pieces on other sites, newest first. */
+export const getWriting = () =>
+  fetchOr<Entry[]>(
+    `*[(_type == "post" && defined(slug.current)) || (_type == "externalPost" && defined(url))]
+      | order(publishedAt desc, _createdAt desc)
+      { title, "slug": slug.current, "date": publishedAt, category, client, excerpt, url }`,
+    [],
+    sample.writing,
   );
 
 export const getBooks = () =>

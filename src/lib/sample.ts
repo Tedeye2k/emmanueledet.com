@@ -26,6 +26,12 @@ export const posts = [
   { title: 'Notes from a year of reading slowly', slug: 'sample-reading-slowly', date: '2026-08-02', category: 'Personal', excerpt: 'A sample summary for a personal essay.', body },
 ];
 
+export const writing = [
+  posts[0],
+  { title: 'A sample piece published on a client’s site', slug: '', date: '2026-10-05', category: 'SEO', client: 'Sample Brand', url: 'https://example.com' },
+  ...posts.slice(1),
+];
+
 export const credits = [
   { title: 'Sample Song One', artist: 'Artist Name', roles: ['Producer', 'Songwriter'], year: '2026', url: 'https://example.com' },
   { title: 'A Second Sample Song', artist: 'Another Artist feat. Someone', roles: ['Producer'], year: '2026', url: 'https://example.com' },

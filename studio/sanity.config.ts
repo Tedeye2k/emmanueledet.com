@@ -23,7 +23,8 @@ export default defineConfig({
               .id('siteSettings')
               .child(S.document().schemaType('siteSettings').documentId('siteSettings')),
             S.divider(),
-            S.documentTypeListItem('post').title('Writing'),
+            S.documentTypeListItem('post').title('Writing (full articles)'),
+            S.documentTypeListItem('externalPost').title('Writing (links to other sites)'),
             S.documentTypeListItem('credit').title('Music credits'),
             S.divider(),
             S.documentTypeListItem('book').title('Books'),
