@@ -37,6 +37,7 @@ const steps = await getSteps();
     </section>
   )}
 
+  {settings.showSteps && (
   <section class="home-process" aria-labelledby="how-i-work">
     <h2 class="section-label mono" id="how-i-work">How I work</h2>
     <ol class="steps">
@@ -50,11 +51,14 @@ const steps = await getSteps();
       ))}
     </ol>
   </section>
+  )}
 
+  {settings.showCta && (
   <section class="home-cta">
     <p class="cta-line" set:html={richLine(settings.ctaLine)} />
     <a class="btn-solid" href={link('/contact/')}>Let’s talk
       <svg aria-hidden="true" width="13" height="13" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M2.5 9.5l7-7M4 2.5h5.5V8"/></svg>
     </a>
   </section>
+  )}
 </Base>

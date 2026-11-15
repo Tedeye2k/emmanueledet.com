@@ -26,6 +26,14 @@ export const siteSettings = defineType({
     defineField({name: 'proof', title: 'Small line under the introduction', type: 'string', group: 'home', description: 'Where you work or who you have written for. For example: Currently at Resparkit · Previously Solorosco Web Service'}),
 
     defineField({
+      name: 'showSteps',
+      title: 'Show "How I work"',
+      type: 'boolean',
+      group: 'home',
+      description: 'Turn off to hide the numbered steps on the home page. Your wording is kept for when you turn it back on.',
+      initialValue: true,
+    }),
+    defineField({
       name: 'steps',
       title: 'How I work',
       type: 'array',
@@ -45,6 +53,14 @@ export const siteSettings = defineType({
         },
       ],
       validation: (rule) => rule.max(4),
+    }),
+    defineField({
+      name: 'showCta',
+      title: 'Show the "Let\'s talk" row',
+      type: 'boolean',
+      group: 'home',
+      description: 'Turn off to hide the closing line and its "Let\'s talk" button at the bottom of the home page.',
+      initialValue: true,
     }),
     defineField({
       name: 'ctaLine',
