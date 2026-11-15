@@ -52,6 +52,8 @@ export type ShelfItem = {
   genre?: string;
   rating?: number;
   note?: string;
+  /** A few sentences under the quote (books). */
+  summary?: string;
   /** Date watched or finished. */
   date?: string;
   /** Rewatch (movies) or reread (books): "yes", "maybe" or "no". */
@@ -153,7 +155,7 @@ export const slugify = (text: string) =>
 export const getBooks = async () =>
   withSlugs(await fetchOr<ShelfItem[]>(
     `*[_type == "book"] | order(coalesce(finishedAt, _createdAt) desc)
-      { ${shelfFields}, "by": author, cover, "date": finishedAt, "again": reread }`,
+      { ${shelfFields}, summary, "by": author, cover, "date": finishedAt, "again": reread }`,
     [],
     sample.books,
   ));

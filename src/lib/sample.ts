@@ -40,7 +40,7 @@ export const credits = [
 ];
 
 export const books = [
-  { title: 'Sample Book One', by: 'Author Name', year: '1958', genre: 'Fiction', date: '2026-10-02', rating: 4.5, again: 'yes', note: 'A one-line note about why it stayed with you.', review: body },
+  { title: 'Sample Book One', by: 'Author Name', year: '1958', genre: 'Fiction', date: '2026-10-02', rating: 4.5, again: 'yes', note: 'A one-line note about why it stayed with you.', summary: 'A few sample sentences that go a little deeper than the one-liner, so you can see how a short review sits under the quote.', review: body },
   { title: 'A Longer Sample Book Title', by: 'Another Author', date: '2026-08-28', rating: 4, again: 'maybe', note: 'Short and honest.' },
   { title: 'Third Sample', year: '2013', rating: 3 },
   { title: 'Fourth Sample', by: 'Someone Else', genre: 'Memoir', rating: 5, again: 'yes', note: 'Worth the hours.' },
