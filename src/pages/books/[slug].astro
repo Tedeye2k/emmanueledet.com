@@ -1,0 +1,13 @@
+---
+import Base from '../../layouts/Base.astro';
+import Review from '../../components/Review.astro';
+import { getBooks } from '../../lib/sanity';
+export async function getStaticPaths() {
+  const books = await getBooks();
+  return books.filter((b) => b.slug).map((item) => ({ params: { slug: item.slug }, props: { item } }));
+}
+const { item } = Astro.props;
+---
+<Base title={item.title} description={item.note} section="books">
+  <Review item={item} kind="book" />
+</Base>

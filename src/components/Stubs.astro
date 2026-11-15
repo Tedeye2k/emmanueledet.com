@@ -1,0 +1,85 @@
+---
+// Ticket-stub cards for the Books and Movies pages.
+// Every optional detail (image, writer/director, year, genre, date,
+// rewatch/reread, full review button) only shows when it is filled in on Sanity.
+import { imageUrl, imageAlt, link, type ShelfItem } from '../lib/sanity';
+interface Props { items: ShelfItem[]; kind: 'book' | 'movie'; }
+const { items, kind } = Astro.props;
+
+const isMovie = kind === 'movie';
+const label = isMovie ? 'Admit one · Film' : 'Shelf · Book';
+const dateLabel = isMovie ? 'Watched' : 'Finished';
+const againLabel = isMovie ? 'Rewatch' : 'Reread';
+const basePath = isMovie ? '/movies/' : '/books/';
+
+const rated = (n?: number) => (typeof n === 'number' && n > 0 ? Math.min(5, Math.round(n * 2) / 2) : 0);
+const shortDate = (value?: string) => {
+  if (!value) return '';
+  const date = new Date(value);
+  if (isNaN(date.getTime())) return '';
+  return new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }).format(date);
+};
+const againText: Record<string, string> = { yes: 'Yes', maybe: 'Maybe', no: 'No' };
+---
+{items.length === 0 ? (
+  <p class="empty mono">Nothing here yet. Check back soon.</p>
+) : (
+  <ul class="stubs">
+    {items.map((item) => {
+      const src = imageUrl(item.cover, 640, 760);
+      const stars = rated(item.rating);
+      const credits = [isMovie && item.by ? `Dir. ${item.by}` : item.by, item.year].filter(Boolean).join(' · ');
+      const date = shortDate(item.date);
+      const again = item.again ? againText[item.again] : '';
+      const details = [
+        date && { k: dateLabel, v: date },
+        item.genre && { k: 'Genre', v: item.genre },
+        stars > 0 && { k: 'Score', v: `${stars} / 5` },
+      ].filter(Boolean) as { k: string; v: string }[];
+      return (
+        <li class="stub">
+          <div class={src ? 'stub-top has-image' : 'stub-top'}>
+            {src && <img class="stub-img" src={src} alt={imageAlt(item.cover, `${isMovie ? 'Poster' : 'Cover'} of ${item.title}`)} width="640" height="760" loading="lazy" />}
+            <div class="stub-top-inner">
+              <span class="stub-label mono">{label}</span>
+              <div class="stub-heading">
+                <h2 class="stub-title">{item.title}</h2>
+                {credits && <span class="stub-credits mono">{credits}</span>}
+              </div>
+            </div>
+          </div>
+
+          <div class="stub-tear" aria-hidden="true"><span></span><i></i><span></span></div>
+
+          <div class="stub-body">
+            {details.length > 0 && (
+              <dl class="stub-details">
+                {details.map((d) => (
+                  <div><dt class="mono">{d.k}</dt><dd>{d.v}</dd></div>
+                ))}
+              </dl>
+            )}
+            {stars > 0 && (
+              <span class="stub-stars" role="img" aria-label={`Rated ${stars} out of 5`}>
+                <span aria-hidden="true" class="stub-stars-off">★★★★★</span>
+                <span aria-hidden="true" class="stub-stars-on" style={`width: ${(stars / 5) * 100}%`}>★★★★★</span>
+              </span>
+            )}
+            {item.note && <p class="stub-note">{item.note}</p>}
+            {(again || item.slug) && (
+              <div class="stub-foot">
+                {again && <span class={`stub-stamp mono is-${item.again}`}>{againLabel}: {again}</span>}
+                {item.slug && (
+                  <a class="stub-btn" href={link(`${basePath}${item.slug}/`)}>
+                    Read full review
+                    <svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"/></svg>
+                  </a>
+                )}
+              </div>
+            )}
+          </div>
+        </li>
+      );
+    })}
+  </ul>
+)}

@@ -40,16 +40,15 @@ export const credits = [
 ];
 
 export const books = [
-  { title: 'Sample Book One', by: 'Author Name', rating: 5, note: 'A one-line note about why it stayed with you.' },
-  { title: 'A Longer Sample Book Title', by: 'Another Author', rating: 4, note: 'Short and honest.' },
-  { title: 'Third Sample', by: 'Author Name', rating: 3 },
-  { title: 'Fourth Sample', by: 'Someone Else', rating: 4, note: 'Worth the hours.' },
-  { title: 'Fifth Sample', by: 'Author Name', rating: 5 },
+  { title: 'Sample Book One', by: 'Author Name', year: '1958', genre: 'Fiction', date: '2026-10-02', rating: 4.5, again: 'yes', note: 'A one-line note about why it stayed with you.', review: body },
+  { title: 'A Longer Sample Book Title', by: 'Another Author', date: '2026-08-28', rating: 4, again: 'maybe', note: 'Short and honest.' },
+  { title: 'Third Sample', year: '2013', rating: 3 },
+  { title: 'Fourth Sample', by: 'Someone Else', genre: 'Memoir', rating: 5, again: 'yes', note: 'Worth the hours.' },
 ];
 
 export const movies = [
-  { title: 'Sample Film One', by: 'Director Name', year: '2024', rating: 4, note: 'A one-line note.' },
-  { title: 'Second Sample Film', by: 'Another Director', year: '2019', rating: 5, note: 'Watched it twice.' },
-  { title: 'Third Film', by: 'Director Name', year: '2022', rating: 3 },
-  { title: 'Fourth Film', by: 'Someone Else', year: '2001', rating: 4 },
+  { title: 'Sample Film One', by: 'Director Name', year: '2014', genre: 'Drama', date: '2026-10-12', rating: 4.5, again: 'yes', note: 'A one-line note.', review: body },
+  { title: 'Second Sample Film', date: '2026-02-03', genre: 'Romance', rating: 4, again: 'maybe', note: 'Watched it twice, cried both times.' },
+  { title: 'Third Film', by: 'Director Name', year: '2022', rating: 3, again: 'no' },
+  { title: 'Fourth Film', year: '2001', rating: 4, note: 'Still holds up.' },
 ];
