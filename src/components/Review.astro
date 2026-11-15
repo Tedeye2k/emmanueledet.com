@@ -4,13 +4,15 @@ import { bodyHtml, imageUrl, imageAlt, link, formatDate, type ShelfItem } from '
 interface Props { item: ShelfItem; kind: 'book' | 'movie'; }
 const { item, kind } = Astro.props;
 const isMovie = kind === 'movie';
+const isSeries = isMovie && item.format === 'series';
 const cover = imageUrl(item.cover, 600, 900);
 const stars = typeof item.rating === 'number' && item.rating > 0 ? Math.min(5, Math.round(item.rating * 2) / 2) : 0;
 const again = item.again ? { yes: 'Yes', maybe: 'Maybe', no: 'No' }[item.again] : '';
 const meta = [
-  isMovie ? 'Movie' : 'Book',
-  isMovie && item.by ? `Dir. ${item.by}` : item.by,
+  isSeries ? 'Series' : isMovie ? 'Movie' : 'Book',
+  isSeries && item.by ? `Created by ${item.by}` : isMovie && item.by ? `Dir. ${item.by}` : item.by,
   item.year,
+  isSeries && item.seasons,
   item.genre,
   item.date && `${isMovie ? 'Watched' : 'Finished'} ${formatDate(item.date)}`,
 ].filter(Boolean);

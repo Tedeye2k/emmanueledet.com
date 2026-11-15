@@ -28,7 +28,7 @@ export const defaults = {
   booksTitle: 'On the *shelf*.',
   booksIntro: 'What I’ve been reading, and whether it was worth the hours.',
   moviesTitle: 'Seen on *screen*.',
-  moviesIntro: 'Films I’ve watched, with an honest rating.',
+  moviesIntro: 'Films and series I’ve watched, with an honest rating.',
   contactTitle: 'Say *hello*.',
   contactIntro:
     'Got a project, a question, or a record I should hear? Pick whichever way suits you.',

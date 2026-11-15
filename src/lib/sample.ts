@@ -48,7 +48,7 @@ export const books = [
 
 export const movies = [
   { title: 'Sample Film One', by: 'Director Name', year: '2014', genre: 'Drama', date: '2026-10-12', rating: 4.5, again: 'yes', note: 'A one-line note.', review: body },
-  { title: 'Second Sample Film', date: '2026-02-03', genre: 'Romance', rating: 4, again: 'maybe', note: 'Watched it twice, cried both times.' },
-  { title: 'Third Film', by: 'Director Name', year: '2022', rating: 3, again: 'no' },
-  { title: 'Fourth Film', year: '2001', rating: 4, note: 'Still holds up.' },
+  { title: 'A Sample Series', format: 'series', by: 'Creator Name', year: '2019–2023', seasons: 'Seasons 1–2', rating: 4, again: 'maybe', note: 'Slow first season, worth it by the end.' },
+  { title: 'Third Film', year: '1997', rating: 3.5 },
+  { title: 'Fourth Film', date: '2025-03-08', rating: 4, note: 'Still holds up.', again: 'no' },
 ];

@@ -52,6 +52,10 @@ export type ShelfItem = {
   genre?: string;
   rating?: number;
   note?: string;
+  /** "movie" or "series" (Movies page). */
+  format?: string;
+  /** Seasons watched, for a series. */
+  seasons?: string;
   /** A few sentences under the quote (books). */
   summary?: string;
   /** Date watched or finished. */
@@ -163,7 +167,7 @@ export const getBooks = async () =>
 export const getMovies = async () =>
   withSlugs(await fetchOr<ShelfItem[]>(
     `*[_type == "movie"] | order(coalesce(watchedAt, _createdAt) desc)
-      { ${shelfFields}, "by": director, "cover": poster, "date": watchedAt, "again": rewatch }`,
+      { ${shelfFields}, format, seasons, "by": director, "cover": poster, "date": watchedAt, "again": rewatch }`,
     [],
     sample.movies,
   ));

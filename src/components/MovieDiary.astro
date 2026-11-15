@@ -1,0 +1,75 @@
+---
+// Diary list for the Movies page: one slim row per movie or series.
+// Every optional detail (poster, director/creator, year, seasons, genre,
+// rating, note, rewatch, date watched, full review link) only shows when
+// it is filled in on Sanity.
+import { imageUrl, imageAlt, link, formatDate, type ShelfItem } from '../lib/sanity';
+interface Props { items: ShelfItem[]; }
+const { items } = Astro.props;
+const rated = (n?: number) => (typeof n === 'number' && n > 0 ? Math.min(5, Math.round(n * 2) / 2) : 0);
+const againText: Record<string, string> = { yes: 'Rewatch', maybe: 'Maybe rewatch', no: 'No rewatch' };
+---
+{items.length === 0 ? (
+  <p class="empty mono">Nothing here yet. Check back soon.</p>
+) : (
+  <ol class="diary">
+    {items.map((item) => {
+      const isSeries = item.format === 'series';
+      const src = imageUrl(item.cover, 144, 216);
+      const stars = rated(item.rating);
+      const credits = [
+        item.by && (isSeries ? `Created by ${item.by}` : `Dir. ${item.by}`),
+        item.year,
+        isSeries && item.seasons,
+        item.genre,
+      ].filter(Boolean).join(' · ');
+      const date = formatDate(item.date);
+      const again = item.again ? againText[item.again] : '';
+      const hasSide = stars > 0 || again || date || item.slug;
+      return (
+        <li class="diary-row">
+          <div class="diary-poster">
+            {src ? (
+              <img src={src} alt={imageAlt(item.cover, `Poster of ${item.title}`)} width="144" height="216" loading="lazy" />
+            ) : (
+              <span class="diary-initial" aria-hidden="true">{item.title.trim().charAt(0)}</span>
+            )}
+          </div>
+
+          <div class="diary-main">
+            {isSeries && <span class="diary-tag mono">Series</span>}
+            <h2 class="diary-title">{item.title}</h2>
+            {credits && <span class="diary-credits mono">{credits}</span>}
+            {item.note && <p class="diary-note">{item.note}</p>}
+          </div>
+
+          {hasSide && (
+            <div class="diary-side">
+              {stars > 0 && (
+                <span class="stub-stars diary-stars" role="img" aria-label={`Rated ${stars} out of 5`}>
+                  <span aria-hidden="true" class="stub-stars-off">★★★★★</span>
+                  <span aria-hidden="true" class="stub-stars-on" style={`width: ${(stars / 5) * 100}%`}>★★★★★</span>
+                </span>
+              )}
+              {again && (
+                <span class={`diary-again mono is-${item.again}`}>
+                  {item.again === 'yes' && (
+                    <svg aria-hidden="true" width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 8a5.5 5.5 0 1 1-1.6-3.9"/><path d="M13.5 2.5v3h-3"/></svg>
+                  )}
+                  {again}
+                </span>
+              )}
+              {date && <span class="diary-date mono">Watched {date}</span>}
+              {item.slug && (
+                <a class="text-link diary-link" href={link(`/movies/${item.slug}/`)}>
+                  Full review
+                  <svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"/></svg>
+                </a>
+              )}
+            </div>
+          )}
+        </li>
+      );
+    })}
+  </ol>
+)}
