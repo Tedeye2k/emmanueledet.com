@@ -1,12 +1,12 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
-import Stubs from '../components/Stubs.astro';
+import BookReviews from '../components/BookReviews.astro';
 import { getSettings, getBooks } from '../lib/sanity';
 const settings = await getSettings();
 const books = await getBooks();
 ---
 <Base title="Books" description={settings.booksIntro} section="books">
   <PageHead label="Books" title={settings.booksTitle} intro={settings.booksIntro} />
-  <Stubs items={books} kind="book" />
+  <BookReviews items={books} />
 </Base>
