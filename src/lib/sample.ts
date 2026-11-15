@@ -28,7 +28,7 @@ export const posts = [
 
 export const writing = [
   posts[0],
-  { title: 'A sample piece published on a client’s site', slug: '', date: '2026-10-05', category: 'SEO', client: 'Sample Brand', url: 'https://example.com' },
+  { title: 'A sample piece published on a client’s site', slug: '', date: '2026-10-05', category: 'SEO', client: 'Sample Brand', url: 'https://example.com', excerpt: 'A sample summary for a piece that lives on a client’s website.' },
   ...posts.slice(1),
 ];
 

@@ -31,6 +31,13 @@ export const externalPost = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'featured',
+      title: 'Show on homepage',
+      type: 'boolean',
+      description: 'Turn on for your best pieces. The homepage shows up to three, newest first. If none are on, it shows your three newest pieces.',
+      initialValue: false,
+    }),
+    defineField({
       name: 'category',
       title: 'Category (optional)',
       type: 'string',
