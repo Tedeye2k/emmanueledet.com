@@ -1,4 +1,5 @@
 import {defineField, defineType} from 'sanity'
+import {ratingOptions} from './rating'
 
 export const book = defineType({
   name: 'book',
@@ -6,18 +7,32 @@ export const book = defineType({
   type: 'document',
   fields: [
     defineField({name: 'title', title: 'Title', type: 'string', validation: (rule) => rule.required()}),
-    defineField({name: 'author', title: 'Author', type: 'string'}),
+    defineField({name: 'author', title: 'Writer (optional)', type: 'string', description: 'Leave empty and it won’t show.'}),
+    defineField({name: 'year', title: 'Year published (optional)', type: 'string', description: 'Leave empty and it won’t show.', validation: (rule) => rule.regex(/^\d{4}$/).warning('Use four digits, like 1958')}),
     defineField({
       name: 'cover',
-      title: 'Cover',
+      title: 'Cover image (optional)',
       type: 'image',
-      description: 'A tall image works best.',
+      description: 'A tall image works best. With no image, the stub shows a plain block with the title.',
       options: {hotspot: true},
       fields: [defineField({name: 'alt', type: 'string', title: 'Description'})],
     }),
-    defineField({name: 'rating', title: 'Rating (1 to 5)', type: 'number', options: {list: [1, 2, 3, 4, 5], layout: 'radio', direction: 'horizontal'}}),
-    defineField({name: 'note', title: 'One-line note', type: 'string', validation: (rule) => rule.max(140)}),
+    defineField({name: 'genre', title: 'Genre (optional)', type: 'string'}),
+    defineField({name: 'rating', title: 'Rating (1 to 5)', type: 'number', options: ratingOptions}),
+    defineField({name: 'note', title: 'One-line note', type: 'string', description: 'Your honest one-liner. Shows on the stub.', validation: (rule) => rule.max(140)}),
+    defineField({
+      name: 'reread',
+      title: 'Would you reread it? (optional)',
+      type: 'string',
+      options: {list: [{title: 'Yes', value: 'yes'}, {title: 'Maybe', value: 'maybe'}, {title: 'No', value: 'no'}], layout: 'radio', direction: 'horizontal'},
+    }),
     defineField({name: 'finishedAt', title: 'Date finished', type: 'date', description: 'Newest shows first.'}),
+    defineField({
+      name: 'review',
+      title: 'Full review (optional)',
+      type: 'bodyText',
+      description: 'Only if you wrote one. When this has text, the stub gets a “Read full review” button.',
+    }),
   ],
   preview: {select: {title: 'title', subtitle: 'author', media: 'cover'}},
 })

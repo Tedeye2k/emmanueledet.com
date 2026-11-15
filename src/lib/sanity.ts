@@ -49,8 +49,17 @@ export type ShelfItem = {
   by?: string;
   year?: string;
   cover?: any;
+  genre?: string;
   rating?: number;
   note?: string;
+  /** Date watched or finished. */
+  date?: string;
+  /** Rewatch (movies) or reread (books): "yes", "maybe" or "no". */
+  again?: string;
+  /** The full review text. Empty when only a one-line note was written. */
+  review?: any[];
+  /** Set by the site when there is a full review: the end of its page link. */
+  slug?: string;
 };
 
 export type Credit = {
@@ -121,21 +130,41 @@ export const getWriting = () =>
     sample.writing,
   );
 
-export const getBooks = () =>
-  fetchOr<ShelfItem[]>(
+const shelfFields = `title, year, genre, rating, note, review`;
+
+/** Gives every item with a full review its own page address, made from its title. */
+function withSlugs(items: ShelfItem[]): ShelfItem[] {
+  const used = new Set<string>();
+  return items.map((item) => {
+    if (!item.review?.length) return { ...item, review: undefined };
+    const base = slugify(item.title) || 'review';
+    let slug = base;
+    if (used.has(slug) && item.year) slug = `${base}-${item.year}`;
+    for (let n = 2; used.has(slug); n++) slug = `${base}-${n}`;
+    used.add(slug);
+    return { ...item, slug };
+  });
+}
+
+export const slugify = (text: string) =>
+  text.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80);
+
+export const getBooks = async () =>
+  withSlugs(await fetchOr<ShelfItem[]>(
     `*[_type == "book"] | order(coalesce(finishedAt, _createdAt) desc)
-      { title, "by": author, cover, rating, note }`,
+      { ${shelfFields}, "by": author, cover, "date": finishedAt, "again": reread }`,
     [],
     sample.books,
-  );
+  ));
 
-export const getMovies = () =>
-  fetchOr<ShelfItem[]>(
+export const getMovies = async () =>
+  withSlugs(await fetchOr<ShelfItem[]>(
     `*[_type == "movie"] | order(coalesce(watchedAt, _createdAt) desc)
-      { title, "by": director, year, "cover": poster, rating, note }`,
+      { ${shelfFields}, "by": director, "cover": poster, "date": watchedAt, "again": rewatch }`,
     [],
     sample.movies,
-  );
+  ));
 
 /** Image address on Sanity's image servers, or null when there is no image. */
 export function imageUrl(source: any, width: number, height?: number): string | null {
